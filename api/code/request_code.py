@@ -1,9 +1,7 @@
 import re
-import time
 
-from .code_object import CodeObject
+from .creds.code_object import CodeObject
 
-import flask
 from flask import Blueprint, Flask, request, send_from_directory
 
 from .emailer import send
@@ -34,6 +32,7 @@ def code():
         return {"response": "Invalid email"}, 400
 
     # TODO: check time
+    #
 
     # generate a code
     code_state = CodeObject()
@@ -43,6 +42,6 @@ def code():
     print(email, code)
     print(get_codes_dict())
 
-    send([email], body=f"Your code is {code_state.code}")
+    send([email], subject="2FA Code", body=f"Your code is {code_state.code}")
 
     return {"response": "Code sent"}, 200

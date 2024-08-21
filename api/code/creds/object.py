@@ -1,25 +1,14 @@
-import secrets
 import time
-from dataclasses import dataclass
 
 
-@dataclass
-class CodeObject:
+class CredObject:
     def __post_init__(self):
+        self._secret: str = self.generate_secret()
         self._time = time.time()
-        self._code = CodeObject.generate_code()
-
-        self._live_for_seconds: float = 120
-
-    @staticmethod
-    def generate_code():
-        # create a random 6 digit integer code
-        number = secrets.randbelow(1000000)
-        return f"{number:06}"
 
     @property
-    def code(self):
-        return self._code
+    def secret(self):
+        return self._secret
 
     @property
     def time(self):
@@ -37,3 +26,16 @@ class CodeObject:
 
     def __repr__(self):
         return f"CodeObject(code={self._code[:-5]}nnnnn, time={self._time})"
+
+    def generate_secret() -> str:
+        raise NotImplementedError("Monkeypatch this.")
+
+    def validate_secret(self, secret: str):
+        assert isinstance(secret, str)
+        assert isinstance(self._secret, str)
+
+        assert len(self._secret) == self.length
+        if len(secret) != self.length:
+            return False
+
+        return self._secret == secret
