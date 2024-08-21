@@ -1,5 +1,4 @@
 import smtplib
-import time
 from ipaddress import ip_address, ip_network
 
 from flask import Flask, request, send_from_directory
@@ -61,6 +60,7 @@ def send(to: list, body=None, cc=None, bcc=None, subject="ALERT"):
         + "Subject: %s\r\n" % subject
         + "\r\n"
         + body
+        + "\r\n"
     )
 
     recipients = to + cc + bcc
