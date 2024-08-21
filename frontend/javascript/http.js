@@ -1,13 +1,21 @@
 ENDPOINT = ".";
 
-function httpGet(url, async = false) {
+function httpReq(url, method = "GET", async = false, headers = null) {
     // add the prefix to the url
     url = ENDPOINT + url;
 
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", url, async);
+    xmlHttp.open(method, url, async);
 
-    // Error logging function
+    // if headers then set them
+    if (headers) {
+        for (var key in headers) {
+            console.log(key, headers[key]);
+            xmlHttp.setRequestHeader(key, headers[key]);
+        }
+    }
+
+    // Error logging function   
     function logError(error) {
         // console.error(`HTTP Error: ${error}`);
     }
