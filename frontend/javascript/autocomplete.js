@@ -99,5 +99,5 @@ function autocomplete(inp, arr) {
     });
 }
 
-const satellites = httpGet('/orbital/satellitesNames')['satellites'];
-autocomplete(document.getElementById("satellite_name"), satellites);
+// const satellites = httpReq('/orbital/satellitesNames')['satellites'];
+// autocomplete(document.getElementById("satellite_name"), satellites);

@@ -7,6 +7,16 @@
 
 <body>
 
+    <!-- add a form for entry, hide the code box -->
+    <div class="container">
+        <form id="form" onsubmit="return false;">
+            <input type="text" id="email_input" placeholder="Email"></input>
+            <input type="text" id="code_input" hidden placeholder="Code 000000"></input>
+
+            <button type="submit" onclick="submitLoginForm()">Get code</button>
+        </form>
+        <div id="autocomplete"></div>
+
 </body>
 
 <head>
