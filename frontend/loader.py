@@ -3,6 +3,7 @@ import os
 
 js_loader = Blueprint("js_loader", __name__, url_prefix="/javascript")
 css_loader = Blueprint("css_loader", __name__, url_prefix="/css")
+asset_loader = Blueprint("asset_loader", __name__, static_folder="assets")
 
 
 def grab_file(filename: str, parent: str):
@@ -40,5 +41,6 @@ def css(filename: str):
 
 def html(filename: str):
     if not filename.endswith(".html"):
-        return "Not Found", 404
+        # return "Not Found", 404
+        filename = f"{filename}.html"
     return grab_file(filename, parent="html")

@@ -1,5 +1,17 @@
 ENDPOINT = ".";
 
+function _generateErrorResponse(xmlHttp) {
+    if (xmlHttp.responseText) {
+        try {
+            return JSON.parse(xmlHttp.responseText);
+        } catch (error) {
+            return { "response": xmlHttp.responseText, "error": "JSON parsing error" }
+        }
+    } else {
+        return xmlHttp.statusText;
+    }
+}
+
 function httpReq(url, method = "GET", async = false, headers = null) {
     // add the prefix to the url
     url = ENDPOINT + url;
@@ -10,12 +22,11 @@ function httpReq(url, method = "GET", async = false, headers = null) {
     // if headers then set them
     if (headers) {
         for (var key in headers) {
-            console.log(key, headers[key]);
             xmlHttp.setRequestHeader(key, headers[key]);
         }
     }
 
-    // Error logging function   
+    // Error logging function
     function logError(error) {
         // console.error(`HTTP Error: ${error}`);
     }
@@ -28,8 +39,8 @@ function httpReq(url, method = "GET", async = false, headers = null) {
                     if (xmlHttp.status == 200) {
                         resolve(JSON.parse(xmlHttp.responseText));
                     } else {
-                        logError(`Status: ${xmlHttp.status}, StatusText: ${xmlHttp.statusText}`);
-                        reject(""); // resolve with null in case of error
+                        logError(`Status: ${xmlHttp.status}, StatusText: ${xmlHttp.statusText}, Response: ${xmlHttp.responseText}`);
+                        reject(_generateErrorResponse(xmlHttp));
                     }
                 }
             };
@@ -37,7 +48,7 @@ function httpReq(url, method = "GET", async = false, headers = null) {
                 xmlHttp.send(null);
             } catch (error) {
                 logError(error);
-                reject(""); // resolve with null in case of error
+                reject(_generateErrorResponse(xmlHttp));
             }
         });
     } else {
@@ -47,11 +58,11 @@ function httpReq(url, method = "GET", async = false, headers = null) {
                 return JSON.parse(xmlHttp.responseText);
             } else {
                 logError(`Status: ${xmlHttp.status}, StatusText: ${xmlHttp.statusText}`);
-                return null; // return null in case of error
+                return _generateErrorResponse(xmlHttp);
             }
         } catch (error) {
             logError(error);
-            return null; // return null in case of error
+            return _generateErrorResponse(xmlHttp);
         }
     }
 }
