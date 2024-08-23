@@ -1,7 +1,7 @@
 from flask import Flask
 
 from api import api
-from frontend.loader import css_loader, html, js_loader
+from frontend.loader import css_loader, html, js_loader, asset_loader
 
 app = Flask(__name__)
 app.sockets = []
@@ -13,9 +13,11 @@ app.register_blueprint(api)
 # Register frontend
 app.register_blueprint(css_loader)
 app.register_blueprint(js_loader)
+app.register_blueprint(asset_loader)
 
 
 @app.route("/")
+@app.route("/<path>")
 @app.route("/<path>.html")
 def hello_world(path=None):
     """
@@ -34,8 +36,19 @@ def hello_world(path=None):
     """
     if path is None:
         path = "index"
-    return html(f"{path}.html")
+    return html(f"{path}")
 
+
+# @app.route("/favicon.ico")
+# def favicon():
+#     """
+#     The `favicon` function returns the favicon of the website.
+
+#     Returns
+#     ----------
+#     - The function `favicon` returns the favicon of the website.
+#     """
+#     return asset_loader.send_static_file("favicon.ico")
 
 if __name__ == "__main__":
     app.run(ssl_context=("cert.pem", "key.pem"), port=443)

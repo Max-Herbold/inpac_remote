@@ -5,6 +5,8 @@ class CredObject:
     def __post_init__(self):
         self._secret: str = self.generate_secret()
         self._time = time.time()
+        self._attempts = 0
+        self._max_attempts = 3
 
     @property
     def secret(self):
@@ -30,12 +32,25 @@ class CredObject:
     def generate_secret() -> str:
         raise NotImplementedError("Monkeypatch this.")
 
+    def _increment_attempts(self):
+        self._attempts += 1
+        if self._attempts > self._max_attempts:
+            self._time = 0  # expire the code
+
     def validate_secret(self, secret: str):
+        if self.is_expired():
+            return False
+
         assert isinstance(secret, str)
         assert isinstance(self._secret, str)
 
-        assert len(self._secret) == self.length
-        if len(secret) != self.length:
-            return False
+        assert len(self._secret) == self._expected_length
 
-        return self._secret == secret
+        valid = self._secret == secret
+        if not valid:
+            self._increment_attempts()
+        return valid
+
+    @property
+    def _expected_length(self):
+        return self._length
