@@ -165,6 +165,15 @@ function showById(id, show) {
     }
     if (show) {
         element.removeAttribute("hidden");
+        if (id == "code-form") {
+            // focus on the code input
+            const code_id = document.getElementById("code_input");
+            code_id.focus();
+        } else if (id == "email-form") {
+            // focus on the email input
+            const email_id = document.getElementById("email_input");
+            email_id.focus();
+        }
     } else {
         element.setAttribute("hidden", true);
     }
