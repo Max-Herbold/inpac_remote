@@ -8,7 +8,10 @@ class CredStore:
         self._creds: typing.Dict[str, TokenObject] = {}
 
     def _remove_cred_by_secret(self, secret: str):
-        del self._creds[secret]
+        try:
+            del self._creds[secret]
+        except KeyError:
+            pass  # ignore if the secret doesn't exist
 
     def _remove_cred_by_email(self, email: str):
         items = list(self._creds.items())
