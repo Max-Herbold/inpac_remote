@@ -9,6 +9,7 @@ class TokenObject(CredObject):
     email: str
     _live_for_seconds: float = 60 * 60  # 1 hour
     _length = 256
+    _expire_on_valid = False
 
     def generate_secret(self):
         return secrets.token_urlsafe(self._length)

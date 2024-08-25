@@ -8,6 +8,7 @@ from .object import CredObject
 class CodeObject(CredObject):
     _live_for_seconds: float = 120
     _length: int = 8
+    _expire_on_valid = True
 
     def generate_secret(self) -> str:
         # create a random 6 digit integer code

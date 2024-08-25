@@ -34,11 +34,12 @@ class CredObject:
 
     def _increment_attempts(self):
         self._attempts += 1
-        if self._attempts > self._max_attempts:
-            self._time = 0  # expire the code
 
     def validate_secret(self, secret: str):
         if self.is_expired():
+            return False
+
+        if self._attempts >= self._max_attempts:
             return False
 
         assert isinstance(secret, str)
@@ -49,6 +50,9 @@ class CredObject:
         valid = self._secret == secret
         if not valid:
             self._increment_attempts()
+        if valid and self._expire_on_valid:
+            self._attempts = self._max_attempts
+
         return valid
 
     @property
