@@ -40,16 +40,5 @@ def hello_world(path=None):
     return html(f"{path}")
 
 
-# @app.route("/favicon.ico")
-# def favicon():
-#     """
-#     The `favicon` function returns the favicon of the website.
-
-#     Returns
-#     ----------
-#     - The function `favicon` returns the favicon of the website.
-#     """
-#     return asset_loader.send_static_file("favicon.ico")
-
 if __name__ == "__main__":
     app.run(ssl_context=("cert.pem", "key.pem"), port=443)
