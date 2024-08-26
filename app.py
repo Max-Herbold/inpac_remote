@@ -1,7 +1,8 @@
+from dotenv import load_dotenv
 from flask import Flask
 
 from api import api
-from frontend.loader import css_loader, html, js_loader, asset_loader
+from frontend.loader import asset_loader, css_loader, html, js_loader
 
 app = Flask(__name__)
 app.sockets = []

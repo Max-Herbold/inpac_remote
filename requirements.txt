@@ -2,3 +2,5 @@ requests
 numpy
 Flask
 flask-sock
+python-dotenv
+mysql-connector-python
