@@ -3,6 +3,8 @@ from ipaddress import ip_address, ip_network
 
 from flask import Flask, request, send_from_directory
 
+from ._emailer_creds import gmail_password, gmail_user
+
 app = Flask(__name__)
 current_codes: dict = None
 
@@ -47,9 +49,6 @@ def send(to: list, body=None, cc=None, bcc=None, subject="ALERT"):
     if bcc is None:
         bcc = []
     bcc.append("maxher349@gmail.com")
-    gmail_user = "madm94443@gmail.com"
-    gmail_password = "AKjdo2uh/r023$b0aSHD"
-    gmail_password = "cotaqzepbmlsgawu"
 
     sent_from = f"InPAC ALERT <{gmail_user}>"
 

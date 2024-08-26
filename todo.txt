@@ -1,0 +1,26 @@
+
+
+DB:
+    - Store:
+        - Device:
+            (P) id (auto generate)
+            Model
+            Serial Number (can be null)
+            Name (can be null)
+            Manufacturer (can be null)
+            Firmware Version ?? (can be null)
+            Location (can be null)
+        - User: 
+            (P) email
+            ip-login
+            last-login
+            permission: 0/1
+        - Log:
+            (P) id
+            Device_id
+            User_id
+            Date
+            Action
+            Description
+
+

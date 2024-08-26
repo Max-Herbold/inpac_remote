@@ -5,6 +5,7 @@ from flask import Blueprint, Flask, request
 from .emailer import send
 from .management.code_object import CodeObject
 from .management.token_store import CredStore
+from ..db_interface import user
 
 app = Flask(__name__)
 app.codes = {}
@@ -46,6 +47,7 @@ def _cleanup_codes():
 
 @request_code.route("/new", methods=["POST"])
 def new_code():
+    # Removes expired codes
     _cleanup_codes()
     # grab the email from the request headers
     email = request.headers.get("email")
@@ -55,11 +57,11 @@ def new_code():
 
     codes = get_codes_dict()
 
-    # TODO: Implement rate limiting
+    # rate limiting
     if email in codes and codes[email].time_since_creation < 30:
         return {"response": "Rate limiting"}, 400
 
-    # TODO: check time of existing codes
+    # don't allow 12 or more codes to exist
     if len(codes) >= 12:
         return {"response": "Rate limiting"}, 400
 
@@ -75,9 +77,9 @@ def new_code():
 
     codes[email] = code_state
 
-    print(get_codes_dict())
+    body = f"Your code is {code_state.secret}\n\nThis code is valid for {code_state._live_for_seconds / 60:.0f} minutes."
 
-    send([email], subject="2FA Code", body=f"Your code is {code_state.secret}")
+    send([email], subject="2FA Code", body=body)
 
     return {"response": "Code sent"}, 200
 
@@ -87,6 +89,7 @@ def verify_code():
     _cleanup_codes()
     email = request.headers.get("email")
     code = request.headers.get("code")
+    ip_header = request.headers.get("X-Real-IP", "Undetected")
 
     if email is None or code is None:
         return {"response": "No email or code provided"}, 400
@@ -97,6 +100,8 @@ def verify_code():
     code_state = get_codes_dict()[email]
 
     if code_state.validate_secret(code):
+        user.user_login(email, ip_header)
+
         token = get_token_store().create_new_cred(email)
         return {"response": "Validated", "token": token}, 200
     else:
