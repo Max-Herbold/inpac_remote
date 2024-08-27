@@ -39,6 +39,8 @@ jobs:
       matrix:
         python-version: ["3.10"]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Deploy to PythonAnywhere
         # Sourced from: https://github.com/umuttopalak/pythonanywhere-deploy-action
         uses: ./.github/actions/release
