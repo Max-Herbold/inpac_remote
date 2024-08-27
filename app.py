@@ -4,7 +4,21 @@ from flask import Flask
 from api import api
 from frontend.loader import asset_loader, css_loader, html, js_loader
 
-load_dotenv()
+assert load_dotenv()
+
+
+# TESTING
+import os
+host = os.getenv("db_host")
+user = os.getenv("db_user")
+password = os.getenv("db_password")
+database = os.getenv("db_database")
+
+
+print(
+    f"Connecting to database {host} as {user} with password {password} and database {database}"
+)
+#!SECTION
 
 app = Flask(__name__)
 app.sockets = []
