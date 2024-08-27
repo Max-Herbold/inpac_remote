@@ -2,7 +2,7 @@ name: InPAC_Remote
 on:
   push:
     branches:
-      - "**"
+      - "main"
   pull_request:
     branches:
       - "**"
