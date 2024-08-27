@@ -92,8 +92,8 @@
                   headers: { Authorization: `Token ${api_token}` },
               });
               console.log("Success.");
-              console.log("Running `python manage.py migrate`.");
-              payload = { input: "python manage.py migrate\n" };
+              console.log("Running `python on_redeploy.py migrate`.");
+              payload = { input: "python on_redeploy.py migrate\n" };
               response = yield axios_1.default.post(console_url, payload, {
                   headers: { Authorization: `Token ${api_token}` },
               });
