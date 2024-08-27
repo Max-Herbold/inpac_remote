@@ -56,6 +56,7 @@
               const directory = core.getInput("directory");
               const github_username = core.getInput("github_username");
               const github_token = core.getInput("github_token");
+              const github_repo_name = core.getInput("github_repo_name");
               const console_url = `https://${host}/api/v0/user/${username}/consoles/${console_id}/send_input/`;
               let payload = {};
               let response = {};
@@ -80,7 +81,7 @@
               }
               console.log("Running `git pull`.");
               // payload = { input: "git pull\n" };
-              payload = { input: "git pull https://Max-Herbold:password@mygithost.com/my/repository\n" };
+              payload = { input: `git pull https://${github_username}:${github_token}@github.com/${github_repo_name}.git\n` };
               response = yield axios_1.default.post(console_url, payload, {
                   headers: { Authorization: `Token ${api_token}` },
               });
