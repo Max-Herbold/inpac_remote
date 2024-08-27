@@ -4,6 +4,8 @@ from flask import Flask
 from api import api
 from frontend.loader import asset_loader, css_loader, html, js_loader
 
+load_dotenv()
+
 app = Flask(__name__)
 app.sockets = []
 
