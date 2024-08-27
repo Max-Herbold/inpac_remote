@@ -4,6 +4,9 @@ import mysql.connector
 from dotenv import load_dotenv
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
+# go up two directories to find the .env file
+BASEDIR = os.path.dirname(BASEDIR)
+BASEDIR = os.path.dirname(BASEDIR)
 print("path", os.path.join(BASEDIR, ".env"))
 
 load_dotenv(os.path.join(BASEDIR, ".env"))
