@@ -29,7 +29,7 @@ inputs:
     description: "Github token"
     required: true
   github_repo_name:
-    description: "Github repository name (${{github.event.repository.name}})"
+    description: "Github repository name (yes, literally the name)"
     required: true
 
 runs:

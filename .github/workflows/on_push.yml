@@ -33,4 +33,4 @@ jobs:
           github_username: ${{ github.actor }}
           # use github secrets for this
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_repo_name: ${{ github.event.repository.name }}
+          github_repo_name: inpac_remote
