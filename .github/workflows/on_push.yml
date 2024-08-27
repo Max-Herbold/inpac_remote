@@ -34,10 +34,6 @@ jobs:
     needs: Test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
