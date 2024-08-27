@@ -33,4 +33,4 @@ jobs:
           github_username: ${{ github.actor }}
           # use github secrets for this
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_repo_name: inpac_remote
+          github_repo_name: Max-Herbold/inpac_remote
