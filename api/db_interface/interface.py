@@ -3,8 +3,11 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+print("path", os.path.join(BASEDIR, ".env"))
 
-assert load_dotenv(), "Failed to load .env file"
+load_dotenv(os.path.join(BASEDIR, ".env"))
+# assert load_dotenv(), "Failed to load .env file"
 
 host = os.getenv("db_host")
 user = os.getenv("db_user")
