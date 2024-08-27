@@ -1,5 +1,10 @@
-import mysql.connector
 import os
+
+import mysql.connector
+from dotenv import load_dotenv
+
+
+assert load_dotenv(), "Failed to load .env file"
 
 host = os.getenv("db_host")
 user = os.getenv("db_user")
