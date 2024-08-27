@@ -2,10 +2,10 @@ name: InPAC_Remote
 on:
   push:
     branches:
-      - main
+      - **
   pull_request:
     branches:
-      - main
+      - **
 
 jobs:
   Test:
@@ -33,6 +33,7 @@ jobs:
   Deploy:
     needs: Test
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     strategy:
       fail-fast: false
       matrix:
