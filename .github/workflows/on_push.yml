@@ -26,10 +26,11 @@ jobs:
         with:
           host: www.pythonanywhere.com
           username: inpac
-          api_token: da4288c9add9d0f40cd1829b85f40a951852ea71
+          api_token: ${{ secrets.PA_API_TOKEN }}
           domain_name: inpac.pythonanywhere.com
           console_id: 35332376
           directory: /home/inpac
           github_username: ${{ github.actor }}
           # use github secrets for this
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repo_name: ${{ github.event.repository.name }}
