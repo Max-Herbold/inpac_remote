@@ -32,7 +32,7 @@ def update():
     # run "/home/inpac/inpac_remote/updater.py"
     # subprocess.run([sys.executable, "/home/inpac/inpac_remote/updater.py"])
 
-    auth_token = request.headers.get("Authorization")
+    auth_token = request.headers.get("Update-Token")
     if auth_token is None:
         abort(401)
 
