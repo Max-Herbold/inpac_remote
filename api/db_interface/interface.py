@@ -34,14 +34,14 @@ class Database:
         # it might still be defined if the connection was lost
         return Database.conn is not None and Database.conn.is_connected()
 
-    def query(self, sql):
+    def query(self, sql, values):
         try:
             cursor = Database.conn.cursor()
-            cursor.execute(sql)
+            cursor.execute(sql, values)
         except (AttributeError, mysql.connector.errors.OperationalError):
             Database.connect()
             cursor = Database.conn.cursor()
-            cursor.execute(sql)
+            cursor.execute(sql, values)
         return cursor
 
 
