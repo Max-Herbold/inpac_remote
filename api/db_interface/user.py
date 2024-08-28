@@ -13,13 +13,13 @@ class User:
 
 
 def _new_user(email, ip):
-    query = "INSERT INTO user (email, ip_login, permission) VALUES (%s, %s, %s)"
+    query = "INSERT INTO User (email, ip_login, permission) VALUES (%s, %s, %s)"
     Database.query(query, (email, ip, 0))
 
 
 def user_login(email, ip):
     # check if the user exists
-    query = "SELECT * FROM user WHERE email = %s"
+    query = "SELECT * FROM User WHERE email = %s"
     cursor = Database.query(query, (email,))
     result = cursor.fetchone()
 
@@ -30,7 +30,7 @@ def user_login(email, ip):
         result = cursor.fetchone()
 
     # update the user's last login and ip
-    query = "UPDATE user SET ip_login = %s, last_login = NOW() WHERE email = %s"
+    query = "UPDATE User SET ip_login = %s, last_login = NOW() WHERE email = %s"
     Database.query(query, (ip, email))
 
 
@@ -41,7 +41,7 @@ def get_user_permission_level(email) -> int:
     2 - authorized to add and remove devices
     3 - admin
     """
-    query = "SELECT permission FROM user WHERE email = %s"
+    query = "SELECT permission FROM User WHERE email = %s"
     cursor = Database.query(query, (email,))
     result = cursor.fetchone()
 

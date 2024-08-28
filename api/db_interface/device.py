@@ -28,7 +28,7 @@ def create_new_device(
     """
     Creates a new device and returns the device object
     """
-    query = "INSERT INTO device (model, serial_number, device_name, manufacturer, firmware_version, device_location) VALUES (%s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO Device (model, serial_number, device_name, manufacturer, firmware_version, device_location) VALUES (%s, %s, %s, %s, %s, %s)"
     Database.query(
         query,
         (
