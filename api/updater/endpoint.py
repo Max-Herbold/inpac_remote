@@ -11,3 +11,4 @@ def update():
     print("update hit")
     # run "/home/inpac/inpac_remote/updater.py"
     subprocess.run([sys.executable, "/home/inpac/inpac_remote/updater.py"])
+    return "Update complete", 200
