@@ -43,7 +43,11 @@ def update():
     ):
         abort(403)
 
-    r = _update()
-    if r != 0:
-        return {"response": "Update failed"}, 500
+    try:
+        r = _update()
+        if r != 0:
+            return {"response": "Update failed (2)"}, 500
+    except Exception:
+        return {"response": "Update failed (1)"}, 500
+
     return {"response": "Update complete"}, 200
