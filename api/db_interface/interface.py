@@ -39,7 +39,7 @@ class Database:
         return Database.conn is not None and Database.conn.is_connected()
 
     @staticmethod
-    def query(sql, values=None) -> MySQLCursor:
+    def query(sql, values=None) -> "MySQLCursor":
         try:
             cursor = Database.conn.cursor()
             cursor.execute(sql, values)
