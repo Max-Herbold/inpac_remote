@@ -1,7 +1,8 @@
 import os
 
 import mysql.connector
-from dotenv import load_dotenv
+
+from ..env_loader import load_env
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 # go up two directories to find the .env file
@@ -14,12 +15,12 @@ class Database:
 
     def connect() -> None:
         # Load the environment variables
-        load_dotenv(os.path.join(BASEDIR, ".env"))
+        env_vars: dict = load_env(os.path.join(BASEDIR, ".env"))
 
-        host = os.getenv("db_host")
-        user = os.getenv("db_user")
-        password = os.getenv("db_password")
-        database = os.getenv("db_database")
+        host = env_vars.get("db_host")
+        user = env_vars.get("db_user")
+        password = env_vars.get("db_password")
+        database = env_vars.get("db_database")
 
         Database.conn = mysql.connector.connect(
             host=host,

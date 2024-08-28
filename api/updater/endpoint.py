@@ -9,9 +9,10 @@ update_bp = Blueprint("update", __name__, url_prefix="/update")
 
 def _update():
     # load env
-    load_env()
+    env_vars = load_env()
+    print(env_vars)
 
-    token = os.getenv("GITHUB_TOKEN")
+    token = env_vars.get("GITHUB_TOKEN")
 
     # run git pull
     command = (
