@@ -11,3 +11,7 @@ def hello():
 @test_bp.route("/test2")
 def hello2():
     return "Hello, World!2"
+
+@test_bp.route("/test3")
+def hello3():
+    return "Hello, World!3"
