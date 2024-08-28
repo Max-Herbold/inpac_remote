@@ -15,7 +15,7 @@ class Database:
 
     def connect() -> None:
         # Load the environment variables
-        env_vars: dict = load_env(os.path.join(BASEDIR, ".env"))
+        env_vars: dict = load_env()
 
         host = env_vars.get("db_host")
         user = env_vars.get("db_user")
