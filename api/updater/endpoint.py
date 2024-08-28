@@ -2,10 +2,15 @@ import os
 
 from flask import Blueprint, request
 
+from ..env_loader import load_env
+
 update_bp = Blueprint("update", __name__, url_prefix="/update")
 
 
 def _update():
+    # load env
+    load_env()
+
     token = os.getenv("GITHUB_TOKEN")
 
     # run git pull
