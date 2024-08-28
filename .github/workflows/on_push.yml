@@ -38,9 +38,9 @@ jobs:
       - name: Request remote pull
         # send a get request https://inpac.pythonanywhere.com/api/update/update
         run: |
-          status = `$(curl -X GET -H '{ Authorization: ${{secrets.UPDATE_TOKEN}}}' https://inpac.pythonanywhere.com/api/update/update)`
+          status = `$(curl -s -o /dev/null -w "%{http_code}" -X GET -H '{ Authorization: ${{secrets.UPDATE_TOKEN}}}' https://inpac.pythonanywhere.com/api/update/update)`
           echo "status: $status"
       - name: Reload remote
         run: |
-          status = "$(curl -X POST -H '{ Authorization: `Token ${{secrets.PA_API_TOKEN}}`' } https://www.pythonanywhere.com/api/v0/user/inpac/webapps/inpac.pythonanywhere.com/reload/)"
+          status = "$(curl -s -o /dev/null -w "%{http_code}" -X POST -H '{ Authorization: `Token ${{secrets.PA_API_TOKEN}}`' } https://www.pythonanywhere.com/api/v0/user/inpac/webapps/inpac.pythonanywhere.com/reload/)"
           echo "status: $status"
