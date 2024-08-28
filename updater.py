@@ -13,5 +13,5 @@ command = (
 )
 print("running pull", command)
 
-# git pull https://Max-Herbold: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@github.com/Max-Herbold/inpac_remote.git
+# git pull https://Max-Herbold:***@github.com/Max-Herbold/inpac_remote.git
 os.system(command)
