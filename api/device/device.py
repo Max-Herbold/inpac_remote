@@ -1,7 +1,7 @@
 from flask import Blueprint, Flask, request
 
 from ..creds import authenticate_user
-from ..db_interface.interface import execute_query
+# from ..db_interface.interface import Database
 
 device_bp = Blueprint("device", __name__, url_prefix="/device")
 
