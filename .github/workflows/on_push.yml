@@ -39,7 +39,9 @@ jobs:
         # send a get request https://inpac.pythonanywhere.com/api/update/update
         # echo "PULL_STATUS=$(curl -s -o /dev/null -w %{http_code} -X GET -H Update-Token:${{secrets.UPDATE_TOKEN}} https://inpac.pythonanywhere.com/api/update/update)" >> $GITHUB_ENV
         run: |
+          echo "$GITHUB_CONTEXT"
           echo "PULL_STATUS='$(curl -s -o /dev/null -w %{http_code} -X GET -H Update-Token:${{secrets.UPDATE_TOKEN}} https://inpac.pythonanywhere.com/api/update/update)'" >> $GITHUB_ENV
+          echo "$GITHUB_CONTEXT"
           echo "status: $PULL_STATUS"
       - name: Reload remote
         # dont run this step if the previous step failed
