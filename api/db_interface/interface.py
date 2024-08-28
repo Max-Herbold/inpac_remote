@@ -1,6 +1,10 @@
 import os
+import typing
 
 import mysql.connector
+
+if typing.TYPE_CHECKING:
+    from mysql.connector.cursor import MySQLCursor
 
 from ..env_loader import load_env
 
@@ -34,7 +38,8 @@ class Database:
         # it might still be defined if the connection was lost
         return Database.conn is not None and Database.conn.is_connected()
 
-    def query(self, sql, values):
+    @staticmethod
+    def query(sql, values=None) -> MySQLCursor:
         try:
             cursor = Database.conn.cursor()
             cursor.execute(sql, values)
