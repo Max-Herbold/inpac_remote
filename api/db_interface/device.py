@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .interface import execute_query
+from .interface import Database
 from .device_log import new_device_log
 
 
@@ -29,7 +29,7 @@ def create_new_device(
     Creates a new device and returns the device object
     """
     query = "INSERT INTO device (model, serial_number, device_name, manufacturer, firmware_version, device_location) VALUES (%s, %s, %s, %s, %s, %s)"
-    execute_query(
+    Database.query(
         query,
         (
             model,
@@ -43,7 +43,7 @@ def create_new_device(
 
     # also add a log for the device
     query = "SELECT LAST_INSERT_ID()"
-    cursor = execute_query(query)
+    cursor = Database.query(query)
     device_id = cursor.fetchone()[0]
 
     new_device_log(device_id, created_by_id, "create", "Device created")

@@ -9,31 +9,47 @@ BASEDIR = os.path.dirname(BASEDIR)
 BASEDIR = os.path.dirname(BASEDIR)
 print("path", os.path.join(BASEDIR, ".env"))
 
-load_dotenv(os.path.join(BASEDIR, ".env"))
-# assert load_dotenv(), "Failed to load .env file"
 
-host = os.getenv("db_host")
-user = os.getenv("db_user")
-password = os.getenv("db_password")
-database = os.getenv("db_database")
+class Database:
+    conn: mysql.connector.MySQLConnection = None
+
+    def connect() -> None:
+        # Load the environment variables
+        load_dotenv(os.path.join(BASEDIR, ".env"))
+
+        host = os.getenv("db_host")
+        user = os.getenv("db_user")
+        password = os.getenv("db_password")
+        database = os.getenv("db_database")
+
+        Database.conn = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database,
+        )
+
+    def is_connected(self) -> bool:
+        # conn might be None if it was never connected
+        # it might still be defined if the connection was lost
+        return Database.conn is not None and Database.conn.is_connected()
+
+    def query(self, sql):
+        try:
+            cursor = Database.conn.cursor()
+            cursor.execute(sql)
+        except (AttributeError, mysql.connector.errors.OperationalError):
+            Database.connect()
+            cursor = Database.conn.cursor()
+            cursor.execute(sql)
+        return cursor
 
 
-print(
-    f"Connecting to database {host} as {user} with password {password} and database {database}"
-)
-mydb = mysql.connector.connect(
-    host=host,
-    user=user,
-    password=password,
-    database=database,
-)
+# def Database.query(query, values=None):
+#     mycursor = mydb.cursor(buffered=True)
+#     mycursor.execute(query, values)
+#     mydb.commit()
+#     return mycursor
 
 
-def execute_query(query, values=None):
-    mycursor = mydb.cursor(buffered=True)
-    mycursor.execute(query, values)
-    mydb.commit()
-    return mycursor
-
-
-print("Connected to database")
+# print("Connected to database")
