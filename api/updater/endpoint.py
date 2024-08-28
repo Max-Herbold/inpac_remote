@@ -1,3 +1,4 @@
+import hashlib
 import os
 
 import requests
@@ -30,6 +31,17 @@ def _update():
 def update():
     # run "/home/inpac/inpac_remote/updater.py"
     # subprocess.run([sys.executable, "/home/inpac/inpac_remote/updater.py"])
+
+    auth_token = request.headers.get("Authorization")
+    if auth_token is None:
+        abort(401)
+
+    # check if the token is correct
+    if (
+        hashlib.md5(auth_token.encode()).hexdigest()
+        != "c6a8b4cd30e8896571151409c7843739"
+    ):
+        abort(403)
 
     r = _update()
     if r != 0:
