@@ -35,19 +35,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Deploy to PythonAnywhere
-        # Sourced from: https://github.com/umuttopalak/pythonanywhere-deploy-action
-        uses: ./.github/actions/release
-        with:
-          host: www.pythonanywhere.com
-          username: inpac
-          api_token: ${{ secrets.PA_API_TOKEN }}
-          domain_name: inpac.pythonanywhere.com
-          console_id: 35332376
-          directory: /home/inpac/inpac_remote
-          github_username: ${{ github.actor }}
-          # use github secrets for this
-          github_token: ${{ secrets.GH_TOKEN }}
-          github_repo_name: Max-Herbold/inpac_remote
+      - name: Request remote pull
+        # send a get request https://inpac.pythonanywhere.com/api/update/update
+        run: |
+          status = $(curl -X GET https://inpac.pythonanywhere.com/api/update/update)
+          echo "status: $status"
+      - name: Reload remote
+        run: |
+          status = $(curl -X POST -H '{ Authorization: `Token ${{secrets.PA_API_TOKEN}}`' } https://www.pythonanywhere.com/api/v0/user/inpac/webapps/inpac.pythonanywhere.com/reload/)
+          echo "status: $status"
