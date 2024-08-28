@@ -6,15 +6,6 @@ from frontend.loader import asset_loader, css_loader, html, js_loader
 app = Flask(__name__)
 app.sockets = []
 
-
-import os
-from dotenv import load_dotenv
-
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-print("root", os.path.join(BASEDIR, ".env"))
-
-res = load_dotenv(os.path.join(BASEDIR, ".env"))
-print("root res", res)
 # Register backend
 app.register_blueprint(api)
 
