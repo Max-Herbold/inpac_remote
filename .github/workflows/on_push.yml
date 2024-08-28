@@ -40,7 +40,7 @@ jobs:
         # echo "PULL_STATUS=$(curl -s -o /dev/null -w %{http_code} -X GET -H Update-Token:${{secrets.UPDATE_TOKEN}} https://inpac.pythonanywhere.com/api/update/update)" >> $GITHUB_ENV
         run: |
           echo "PULL_STATUS='$(curl -s -o /dev/null -w %{http_code} -X GET -H Update-Token:${{secrets.UPDATE_TOKEN}} https://inpac.pythonanywhere.com/api/update/update)'" >> $GITHUB_ENV
-          echo status: $PULL_STATUS
+          echo status: ${{env.PULL_STATUS}}.
       - name: Reload remote
         # dont run this step if the previous step failed
         if: env.PULL_STATUS == 200
