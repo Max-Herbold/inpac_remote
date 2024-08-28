@@ -12,7 +12,7 @@ def _update():
     env_vars = load_env()
     print(env_vars)
 
-    token = env_vars.get("GITHUB_TOKEN")
+    token = env_vars.get("GH_TOKEN")
 
     # run git pull
     command = (
