@@ -41,10 +41,14 @@ jobs:
         run: |
           PULL_STATUS=$(curl -s -o /dev/null -w %{http_code} -X GET -H Update-Token:${{secrets.UPDATE_TOKEN}} https://inpac.pythonanywhere.com/api/update/update)
           echo "PULL_STATUS=$PULL_STATUS" >> $GITHUB_ENV
-          echo status: $PULL_STATUS.
+          echo status: $PULL_STATUS
       - name: Reload remote
         # dont run this step if the previous step failed
         if: env.PULL_STATUS == 200
         run: |
-          echo `reload_status=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H '{ Authorization: `Token ${{secrets.PA_API_TOKEN}}` }' https://www.pythonanywhere.com/api/v0/user/inpac/webapps/inpac.pythonanywhere.com/reload/)` >> $GITHUB_ENV
-          echo "status: ${{ env.reload_status }}"
+          RELOAD_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H '{ Authorization: `Token ${{secrets.PA_API_TOKEN}}` }' https://www.pythonanywhere.com/api/v0/user/inpac/webapps/inpac.pythonanywhere.com/reload/)
+          echo status: $RELOAD_STATUS
+          if [ $RELOAD_STATUS -ne 200 ]; then
+            echo "Reload failed"
+            exit 1
+          fi
