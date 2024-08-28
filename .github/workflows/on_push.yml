@@ -38,7 +38,7 @@ jobs:
       - name: Request remote pull
         # send a get request https://inpac.pythonanywhere.com/api/update/update
         run: |
-          echo `request_status=$(curl -s -o /dev/null -w "%{http_code}" -X GET -H '{ Authorization: ${{secrets.UPDATE_TOKEN}}}' https://inpac.pythonanywhere.com/api/update/update` >> $GITHUB_ENV
+          echo "request_status=$(curl -s -o /dev/null -w '%{http_code}' -X GET -H '{ Authorization: ${{secrets.UPDATE_TOKEN}}}' https://inpac.pythonanywhere.com/api/update/update" >> $GITHUB_ENV
           echo "status: ${{env.request_status}}"
       - name: Reload remote
         run: |
