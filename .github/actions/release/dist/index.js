@@ -86,12 +86,12 @@
                   headers: { Authorization: `Token ${api_token}` },
               });
               console.log("Success.");
-              console.log("Running `pip install -r requirements.txt`.");
-              payload = { input: "pip install -r requirements.txt\n" };
-              response = yield axios_1.default.post(console_url, payload, {
-                  headers: { Authorization: `Token ${api_token}` },
-              });
-              console.log("Success.");
+              // console.log("Running `pip install -r requirements.txt`.");
+              // payload = { input: "pip install -r requirements.txt\n" };
+              // response = yield axios_1.default.post(console_url, payload, {
+              //     headers: { Authorization: `Token ${api_token}` },
+              // });
+              // console.log("Success.");
               console.log("Running `python on_redeploy.py migrate`.");
               payload = { input: "python on_redeploy.py migrate\n" };
               response = yield axios_1.default.post(console_url, payload, {
