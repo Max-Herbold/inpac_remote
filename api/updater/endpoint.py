@@ -14,6 +14,10 @@ def _update():
     )
     print("running pull", command)
 
+    print(os.getcwd())
+
+    # move to dir
+    os.chdir("/home/inpac/inpac_remote")
     # git pull https://Max-Herbold:***@github.com/Max-Herbold/inpac_remote.git
     os.system(command)
     print("done")
