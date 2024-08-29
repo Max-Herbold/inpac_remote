@@ -8,7 +8,7 @@ user_endpoint = Blueprint("user_endpoint", __name__, url_prefix="/user")
 
 @user_endpoint.route("/email", methods=["get"])
 def get_email():
-    token = request.headers.get("token")
+    token = request.cookies.get("token")
 
     if token is None:
         return {"response": "No token provided"}, 400
@@ -29,7 +29,7 @@ def _internal_get_email(token):
 
 @user_endpoint.route("/validate", methods=["get"])
 def validate():
-    token = request.headers.get("token")
+    token = request.cookies.get("token")
 
     if token is None:
         return {"response": "No token provided"}, 400
@@ -57,11 +57,11 @@ def authenticate_user(fn):
     """
 
     def wrapper(required_permission_level=0, user_email=None):
-        token = request.headers.get("token")
+        token = request.cookies.get("token")
 
         is_valid = _is_valid_token(token)
         if not is_valid:
-            return {"response": "Invalid token"}, 403
+            return {"response": "No token provided"}, 401
         email = _internal_get_email(token)
         if email is None:
             return {"response": "Invalid token"}, 403
@@ -89,7 +89,7 @@ def _is_valid_token(token):
 
 @user_endpoint.route("/logout", methods=["post"])
 def logout():
-    token = request.headers.get("token")
+    token = request.cookies.get("token")
 
     if token is None:
         return {"response": "No token provided"}, 400
