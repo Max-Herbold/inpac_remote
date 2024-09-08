@@ -1,4 +1,4 @@
-from flask import Blueprint, Request, current_app, request, send_file
+from flask import Blueprint, Request, current_app, request, send_from_directory
 import os
 
 js_loader = Blueprint("js_loader", __name__, url_prefix="/javascript")
@@ -11,25 +11,14 @@ def grab_file(filename: str, parent: str):
         return "Not Found", 404
     filename = filename.strip(".")
     root = os.path.dirname(__file__)
-    full_path = f"{root}/{parent}/{filename}"
-    if not os.path.exists(full_path):
-        return "Not Found", 404
-    if os.path.isdir(full_path):
-        return "Not Found", 404
-    # if the file is not in the root directory, return 404
-    for root, dirs, files in os.walk(root):
-        if filename in files:
-            break
-    else:
-        return "Not Found", 404
-    return send_file(f"{root}/{filename}")
+    return send_from_directory(f"{root}/{parent}", filename)
 
 
-@js_loader.route("/<filename>")
-def js(filename: str):
-    if not filename.endswith(".js"):
+@js_loader.route("/<path:path>")
+def js(path: str):
+    if not path.endswith(".js"):
         return "Not Found", 404
-    return grab_file(filename, parent="javascript")
+    return grab_file(path, parent="javascript")
 
 
 @css_loader.route("/<filename>")
