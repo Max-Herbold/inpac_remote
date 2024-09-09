@@ -21,11 +21,11 @@ def js(path: str):
     return grab_file(path, parent="javascript")
 
 
-@css_loader.route("/<filename>")
-def css(filename: str):
-    if not filename.endswith(".css"):
+@css_loader.route("/<path:path>")
+def css(path: str):
+    if not path.endswith(".css"):
         return "Not Found", 404
-    return grab_file(filename, parent="css")
+    return grab_file(path, parent="css")
 
 
 def html(filename: str):

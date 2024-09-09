@@ -1,10 +1,42 @@
 <head>
     <!-- Support stuff -->
     <script src="./javascript/http.js"></script>
+    <link rel="stylesheet" href="./css/dashboard/dashboard.css" />
     <link rel="shortcut icon" href="./assets/images/favicon.ico" />
 </head>
 
 <body>
+
+    <!-- A button to open the popup form -->
+    <button class="open-button" onclick="openForm()">Log Device Movement</button>
+
+    <!-- The form -->
+    <div class="form-popup" id="myForm">
+        <form onsubmit="return false;" class="form-container">
+            <h1>Create Device Log</h1>
+
+            <!-- device name field -->
+            <label for="device_name"><b>Device Name</b></label>
+            <input type="text" placeholder="Enter Device Name" name="device_name" required>
+
+            <!-- device log action, move/install/repair/discard -->
+            <label for="device_action"><b>Device Action</b></label>
+            <select name="device_action" id="device_action">
+                <option value="move">Move</option>
+                <option value="install">Install</option>
+                <option value="repair">Repair</option>
+                <option value="discard">Discard</option>
+            </select>
+
+            <!-- device log description -->
+            <label for="device_description"><b>Action Description</b></label>
+            <input type="text" placeholder="Enter Device Description" name="device_description" required>
+
+
+            <button type="submit" class="btn">Submit</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+        </form>
+    </div>
 
 </body>
 
@@ -12,6 +44,7 @@
     <script src="./javascript/loader.js"></script>
     <script src="./javascript/cookieHandler.js"></script>
     <!-- <script src="./javascript/secured_page.js"></script> -->
-    <script src="./javascript/dashboard.js"></script>
+    <script src="./javascript/dashboard/dashboard.js"></script>
     <script src="./javascript/logout.js"></script>
+    <!-- <script src="./javascript/login.js"></script> -->
 </head>
