@@ -49,12 +49,14 @@ def create_new_device(
     new_device_log(device_id, created_by_id, "create", "Device created")
 
 
-# create_new_device(
-#     1,
-#     "model",
-#     "serial_number",
-#     "device_name",
-#     "manufacturer",
-#     "firmware_version",
-#     "device_location",
-# )
+def list_devices():
+    """
+    Returns a list of all devices
+    """
+    query = "SELECT * FROM Device"
+    cursor = Database.query(query)
+    devices = cursor.fetchall()
+
+    listed = [Device(*device) for device in devices]
+    # remove the first device
+    return listed[1:]
