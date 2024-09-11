@@ -24,3 +24,11 @@ def new_device_log(device_id, created_by_id, action: str, description: str):
 
     query = "UPDATE Device SET last_log_id = %s WHERE id = %s"
     Database.query(query, (last_log_id, device_id))
+
+
+def get_device_logs(device_id):
+    query = "SELECT * FROM Device_Log WHERE device_id = %s"
+    cursor = Database.query(query, (device_id,))
+    logs = cursor.fetchall()
+
+    return [DeviceLog(*log) for log in logs]
