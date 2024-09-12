@@ -1,0 +1,18 @@
+<head>
+    <!-- Support stuff -->
+    <script src="./javascript/http.js"></script>
+    <script src="./javascript/cookieHandler.js"></script>
+</head>
+
+<script>
+    // post to /api/code/verify with headers email="gimmie_stuff"
+    httpReq("/api/code/verify", "POST", true, { email: "max.herbold@rmit.edu.au" })
+        .then((response) => {
+            // grab response.token and set it as a cookie
+            addCookie("token", response.token);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+</script>

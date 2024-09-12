@@ -21,25 +21,39 @@
 
   <!-- The form -->
   <div class="form-popup" id="myForm">
-    <form onsubmit="return false;" class="form-container">
+    <form onsubmit="return submitLogForm();" class="form-container">
       <h1>Create Device Log</h1>
-
-      <!-- device name field -->
-      <label for="device_name"><b>Device Name</b></label>
-      <input type="text" placeholder="Enter Device Name" name="device_name" required>
+      <!-- location -->
+      <label for="location"><b>Location</b></label>
+      <input type="text" placeholder="Enter Location" name="device_location" required>
 
       <!-- device log action, move/install/repair/discard -->
       <label for="device_action"><b>Device Action</b></label>
       <select name="device_action" id="device_action">
         <option value="move">Move</option>
-        <option value="install">Install</option>
+        <option value="create">New Device</option>
         <option value="repair">Repair</option>
         <option value="discard">Discard</option>
       </select>
 
+      <label for="device_model"><b>Device Model</b></label>
+      <input type="text" placeholder="Enter Device Model" name="device_model" required>
+
+      <!-- manufacturer -->
+      <label for="device_manufacturer"><b>Manufacturer</b></label>
+      <input type="text" placeholder="Enter Manufacturer" name="device_manufacturer" required>
+
+      <!-- device serial number field -->
+      <label for="device_serial_number"><b>Device Serial</b></label>
+      <input type="text" placeholder="Enter Device Serial" name="device_serial_number">
+
+      <!-- device name field -->
+      <label for="device_name"><b>Device Name</b></label>
+      <input type="text" placeholder="Enter Device Name" name="device_name">
+
       <!-- device log description -->
-      <label for="device_description"><b>Action Description</b></label>
-      <input type="text" placeholder="Enter Device Description" name="device_description" required>
+      <!-- <label for="device_description"><b>Action Description</b></label>
+      <input type="text" placeholder="Enter Device Description" name="device_description" required> -->
 
 
       <button type="submit" class="btn">Submit</button>
@@ -55,4 +69,5 @@
   <script src="./javascript/secured_page.js"></script>
   <script src="./javascript/dashboard/dashboard.js"></script>
   <script src="./javascript/logout.js"></script>
+  <script src="./javascript/addDeviceLog.js"></script>
 </head>

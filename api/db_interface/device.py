@@ -46,7 +46,7 @@ def create_new_device(
     cursor = Database.query(query)
     device_id = cursor.fetchone()[0]
 
-    new_device_log(device_id, created_by_id, "create", "Device created")
+    return new_device_log(device_id, created_by_id, "create", "Device created")
 
 
 def list_devices():

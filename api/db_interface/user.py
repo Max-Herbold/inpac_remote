@@ -49,3 +49,22 @@ def get_user_permission_level(email) -> int:
         return None
 
     return result[0]
+
+
+def get_all_user_info(email) -> dict:
+    query = "SELECT * FROM User WHERE email = %s"
+    cursor = Database.query(query, (email,))
+    result = cursor.fetchone()
+
+    if result is None:
+        return None
+
+    print(result)
+
+    return {
+        "id": result[0],
+        "email": result[1],
+        "ip_login": result[2],
+        "last_login": result[3],
+        "permission": result[4],
+    }

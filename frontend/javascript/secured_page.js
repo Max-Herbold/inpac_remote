@@ -59,7 +59,7 @@ window.addEventListener('load', () => {
             if (response) {
                 let email = response.email;
                 displayLoggedInUser(email);
-                addHeader(email);
+                // addHeader(email);
             }
         }).catch((error) => {
             window.location.href = "/";

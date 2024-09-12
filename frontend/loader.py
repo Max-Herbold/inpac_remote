@@ -1,5 +1,6 @@
-from flask import Blueprint, Request, current_app, request, send_from_directory
 import os
+
+from flask import Blueprint, Request, current_app, request, send_from_directory
 
 js_loader = Blueprint("js_loader", __name__, url_prefix="/javascript")
 css_loader = Blueprint("css_loader", __name__, url_prefix="/css")
@@ -9,6 +10,10 @@ asset_loader = Blueprint("asset_loader", __name__, static_folder="assets")
 def grab_file(filename: str, parent: str):
     if ".." in filename:
         return "Not Found", 404
+
+    if "debug_login" in filename and not (os.environ.get("DEBUG") == "True"):
+        return "Not Found", 404
+
     filename = filename.strip(".")
     root = os.path.dirname(__file__)
     return send_from_directory(f"{root}/{parent}", filename)

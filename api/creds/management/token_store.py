@@ -1,5 +1,7 @@
 import typing
 
+import os
+
 from .token_object import TokenObject
 
 
@@ -10,8 +12,9 @@ class CredStore:
     def _remove_cred_by_secret(self, secret: str):
         try:
             del self._creds[secret]
+            return True
         except KeyError:
-            pass  # ignore if the secret doesn't exist
+            return False  # ignore if the secret doesn't exist
 
     def _remove_cred_by_email(self, email: str):
         items = list(self._creds.items())
@@ -54,7 +57,7 @@ class CredStore:
         return cred.validate_secret(token)
 
     def remove_token(self, token: str):
-        self._remove_cred_by_secret(token)
+        return self._remove_cred_by_secret(token)
 
     def validate_token(self, token: str) -> bool:
         cred = self._get_cred(token)
