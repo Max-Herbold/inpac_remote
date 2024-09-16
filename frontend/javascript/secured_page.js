@@ -19,31 +19,23 @@ function displayLoggedInUser(email) {
 
 // add header to body
 function addHeader(email) {
+    // always include the header css with the header itself
+    const link = document.createElement("link");
+    link.href = "/css/header.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    // add the header div to the body
     document.body.innerHTML = `<div id="header-div"></div>${document.body.innerHTML}`;
-    // document.getElementById("header-div").innerHTML = `<h1>Secured Page ${email}</h1>`;
 
+    // add the header to the header div
     const headerDiv = document.getElementById("header-div");
-    // make the header div show at the top of the page
-    headerDiv.style.position = "fixed";
-    headerDiv.style.width = "100%";
-    headerDiv.style.backgroundColor = "black";
-    headerDiv.style.color = "white";
-
-    // headerDiv.style.marginLeft = "-1rem";
-    // headerDiv.style.marginRight = "0";
-    headerDiv.style.padding = "10px"
-    headerDiv.style.textAlign = "center";
-
-    headerDiv.style.zIndex = "100";
-    headerDiv.style.top = "0";
-    headerDiv.style.right = "0";
-    headerDiv.style.left = "0";
-    // ensure no other elements are hidden by the header
-    document.body.style.marginTop = "110px";
-
     headerDiv.innerHTML = `
-    <img src="/assets/images/inpac.png" style="position: fixed; display: block; height: 75px; width: 75px; left: 10px;"/>
-    <h1>Secured Page ${email}</h1>
+    <img src="/assets/images/inpac.png" id="header-image"/>
+    <h1>placeholder</h1>
+    <div>
+        <button id="logoutButton" onclick="logoutUser()">Logout</button>
+    </div>
     `;
 }
 
@@ -59,7 +51,7 @@ window.addEventListener('load', () => {
             if (response) {
                 let email = response.email;
                 displayLoggedInUser(email);
-                // addHeader(email);
+                addHeader(email);
             }
         }).catch((error) => {
             window.location.href = "/";

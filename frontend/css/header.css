@@ -1,0 +1,45 @@
+#logoutButton {
+    background-color: #555;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    width: 10rem;
+    position: fixed;
+    display: block;
+    right: 25px;
+    top: 25px;
+}
+
+#logoutButton:hover {
+    opacity: 1;
+}
+
+#header-div {
+    /* margin-left: -1rem;
+    margin-right: 0; */
+    position: fixed;
+    width: 100%;
+    background-color: #000000;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+/* ensure no other elements are hidden by the header */
+body {
+    margin-top: 110px;
+}
+
+#header-image {
+    position: fixed;
+    display: block;
+    height: 75px;
+    width: 75px;
+    left: 10px;
+}

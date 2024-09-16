@@ -13,6 +13,7 @@ class Device:
     manufacturer: str
     firmware_version: str
     device_location: str
+    device_owner: str
     last_log_id: int = -1
 
 
@@ -24,11 +25,12 @@ def create_new_device(
     manufacturer,
     firmware_version,
     device_location,
+    device_owner,
 ):
     """
     Creates a new device and returns the device object
     """
-    query = "INSERT INTO Device (model, serial_number, device_name, manufacturer, firmware_version, device_location) VALUES (%s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO Device (model, serial_number, device_name, manufacturer, firmware_version, device_location, device_owner) VALUES (%s, %s, %s, %s, %s, %s %s)"
     Database.query(
         query,
         (
@@ -38,6 +40,7 @@ def create_new_device(
             manufacturer,
             firmware_version,
             device_location,
+            device_owner,
         ),
     )
 

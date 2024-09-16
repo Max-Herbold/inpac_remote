@@ -1,14 +1,16 @@
 function submitLogForm() {
     // grab the fields we care about
     let device_location = document.getElementById("device_location").value;
+    let device_owner = document.getElementById("device_owner").value;
     let device_action = document.getElementById("device_action").value;
     let device_model = document.getElementById("device_model").value
     let device_manufacturer = document.getElementById("device_manufacturer").value;
     let device_serial_number = document.getElementById("device_serial_number").value;
     let device_name = document.getElementById("device_name").value;
 
-    headers = {
+    const headers = {
         "device_location": device_location,
+        "device_owner": device_owner,
         "device_action": device_action,
         "device_model": device_model,
         "device_manufacturer": device_manufacturer,
@@ -22,7 +24,7 @@ function submitLogForm() {
         console.error(error);
     });
 
-    // FIXME: This form still redirects on submission... why?
+    closeForm();
     return false;
 }
 

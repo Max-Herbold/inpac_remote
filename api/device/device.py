@@ -13,15 +13,6 @@ def list_devices_endpoint():
     return {"response": "success", "devices": devices}
 
 
-# class Device:
-#     id: int
-#     model: str
-#     serial_number: str
-#     device_name: str  # alternative name
-#     manufacturer: str
-#     firmware_version: str
-#     device_location: str
-#     last_log_id: int = -1
 @device_bp.route("/add", methods=["post"])
 @authenticate_user(required_permission_level=1)
 def add_device(user):
@@ -29,6 +20,7 @@ def add_device(user):
 
     user_id = user.id
     device_location = data.get("device_location")
+    device_owner = data.get("device_owner")
     device_action = data.get("device_action")
     model = data.get("device_model")
     manufacturer = data.get("device_manufacturer")
@@ -42,6 +34,11 @@ def add_device(user):
         return {"response": "error", "error": "Manufacturer is required"}, 400
     if device_location is None:
         return {"response": "error", "error": "Device location is required"}, 400
+    if device_action == "create" and device_owner is None:
+        return {
+            "response": "error",
+            "error": "Device owner is required when creating a device",
+        }, 400
 
     try:
         response = create_new_device(
