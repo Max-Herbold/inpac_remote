@@ -1,7 +1,6 @@
 import smtplib
-from ipaddress import ip_address, ip_network
 
-from flask import Flask, request, send_from_directory
+from flask import Flask
 
 from ._emailer_creds import gmail_password, gmail_user
 
@@ -10,21 +9,7 @@ current_codes: dict = None
 
 THIRTY_SECONDS = 30
 
-ignored_cidr = ()  # example: "192.168.0.0/24",
-
 last_updated_record = {}
-
-
-def allowed_ip(ip: str) -> bool:
-    """
-    Checks if an IP is in the ignored_cidr list
-    :param ip: The IP to check e.g. 192.168.0.1
-    :return: True if the IP is in the ignored_cidr list, False otherwise
-    """
-    for i in ignored_cidr:
-        if ip_address(ip) in ip_network(i):
-            return False
-    return True
 
 
 def send(to: list, body=None, cc=None, bcc=None, subject="ALERT"):

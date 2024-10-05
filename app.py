@@ -1,10 +1,13 @@
 from flask import Flask
 
+from updater_interface import update_interface
 from api import api
 from frontend.loader import asset_loader, css_loader, html, js_loader
 
 app = Flask(__name__)
 app.sockets = []
+
+app.register_blueprint(update_interface)
 
 # Register backend
 app.register_blueprint(api)
