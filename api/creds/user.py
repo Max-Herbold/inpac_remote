@@ -56,7 +56,7 @@ def authenticate_user(fn):
     token is invalid, it returns a response indicating "Invalid token" with a status code of 403.
     """
 
-    def wrapper(required_permission_level=0, user_email=None):
+    def _authenticate_user(required_permission_level=0, user_email=None):
         token = request.cookies.get("token")
 
         is_valid = _is_valid_token(token)
@@ -77,7 +77,7 @@ def authenticate_user(fn):
 
         return fn()
 
-    return wrapper
+    return _authenticate_user
 
 
 def _is_valid_token(token):
