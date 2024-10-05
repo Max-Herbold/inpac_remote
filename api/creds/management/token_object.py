@@ -15,7 +15,7 @@ class TokenObject(CredObject):
         return secrets.token_urlsafe(self._length)
 
     def get_email(self):
-        return self.email
+        return self.email.lower()
 
     @property
     def _expected_length(self):
