@@ -12,7 +12,7 @@ function _generateErrorResponse(xmlHttp) {
     }
 }
 
-function httpReq(url, method = "GET", async = false, headers = null) {
+function httpReq(url, method = "GET", async = false, headers = null, body = null) {
     // add the prefix to the url
     url = ENDPOINT + url;
 
@@ -24,6 +24,11 @@ function httpReq(url, method = "GET", async = false, headers = null) {
         for (var key in headers) {
             xmlHttp.setRequestHeader(key, headers[key]);
         }
+    }
+
+    // if body is defined as a json object
+    if (body) {
+        xmlHttp.send(JSON.stringify(body));
     }
 
     // Error logging function

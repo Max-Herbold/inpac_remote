@@ -17,6 +17,7 @@ def list_devices_endpoint():
 @authenticate_user(required_permission_level=1)
 def add_device(user):
     data = request.headers
+    print(request.body, request.json())
 
     user_id = user.id
     device_location = data.get("device_location")

@@ -10,6 +10,9 @@
         .then((response) => {
             // grab response.token and set it as a cookie
             addCookie("token", response.token);
+
+            // redirect to dashboard
+            window.location.href = "./dashboard";
         })
         .catch((error) => {
             console.error(error);
