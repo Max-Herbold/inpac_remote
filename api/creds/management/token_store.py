@@ -1,7 +1,5 @@
 import typing
 
-import os
-
 from .token_object import TokenObject
 
 
