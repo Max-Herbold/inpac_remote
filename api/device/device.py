@@ -1,7 +1,13 @@
+import typing
+
 from flask import Blueprint, Flask, request
 
 from ..creds import authenticate_user
 from ..db_interface.device import create_new_device, list_devices
+
+if typing.TYPE_CHECKING:
+    from ..creds.user import User
+
 
 device_bp = Blueprint("device", __name__, url_prefix="/device")
 
@@ -15,9 +21,10 @@ def list_devices_endpoint():
 
 @device_bp.route("/add", methods=["post"])
 @authenticate_user(required_permission_level=1)
-def add_device(user):
+def add_device(user: "User"):
     data = request.headers
     print(request.body, request.json())
+    print(user)
 
     user_id = user.id
     device_location = data.get("device_location")

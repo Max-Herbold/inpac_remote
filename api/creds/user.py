@@ -89,7 +89,6 @@ def authenticate_user(fn=None, required_permission_level=0, user_email=None):
         """
 
         def __authenticate_user(*args, **kwargs):
-            print(args, kwargs)
             token = request.cookies.get("token")
 
             is_valid = _is_valid_token(token)

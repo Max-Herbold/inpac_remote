@@ -7,12 +7,26 @@ css_loader = Blueprint("css_loader", __name__, url_prefix="/css")
 asset_loader = Blueprint("asset_loader", __name__, static_folder="assets")
 
 
+debug_mappings = {
+    "secured_page.js": "debug_secured_page.js",
+}
+
+
+def _is_debugging() -> bool:
+    return os.environ.get("DEBUG") == "True"
+
+
 def grab_file(filename: str, parent: str):
     if ".." in filename:
         return "Not Found", 404
 
-    if "debug_login" in filename and not (os.environ.get("DEBUG") == "True"):
+    # if grabbing a debug file, make sure debug is enabled
+    # debug files start with debug_
+    if filename.startswith("debug_") and not (_is_debugging()):
         return "Not Found", 404
+
+    if _is_debugging():
+        filename = debug_mappings.get(filename, filename)
 
     filename = filename.strip(".")
     root = os.path.dirname(__file__)

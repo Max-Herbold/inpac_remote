@@ -4,3 +4,4 @@ Flask
 flask-sock
 python-dotenv
 mysql-connector-python
+Flask-Limiter

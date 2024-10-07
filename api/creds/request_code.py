@@ -29,7 +29,7 @@ request_code = Blueprint("request_code", __name__, url_prefix="/code")
 
 
 ALLOWED_EXTENSIONS = {
-    # TODO: Add more universities
+    # NOTE: Add more email extensions here
     "rmit.edu.au",
     "student.rmit.edu.au",
     "student.monash.edu",
@@ -53,7 +53,7 @@ def new_code(send_email=True):
     # grab the email from the request headers
     email = request.headers.get("email")
 
-    if email is None:
+    if email is None or email == "":
         return {"response": "No email provided"}, 400
 
     codes = get_codes_dict()
@@ -78,7 +78,7 @@ def new_code(send_email=True):
 
     codes[email] = code_state
 
-    if send_email:
+    if send_email and not email.startswith("testing"):
         body = f"Your code is {code_state.secret}\n\nThis code is valid for {code_state._live_for_seconds / 60:.0f} minutes."
         send([email], subject="2FA Code", body=body)
 
@@ -87,8 +87,8 @@ def new_code(send_email=True):
 
 @request_code.route("/verify", methods=["POST"])
 def verify_code():
-
     _cleanup_codes()
+
     email = request.headers.get("email")
     code = request.headers.get("code")
     ip_header = request.headers.get("X-Real-IP", "Undetected")
