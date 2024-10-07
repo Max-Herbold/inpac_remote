@@ -1,15 +1,17 @@
-import re
 import os
+import re
 
 from flask import Blueprint, Flask, request
 
+from ..db_interface import user
 from .emailer import send
 from .management.code_object import CodeObject
 from .management.token_store import CredStore
-from ..db_interface import user
 
 app = Flask(__name__)
 app.codes = {}
+
+
 if not hasattr(app, "token_store"):
     app.token_store = CredStore()
 

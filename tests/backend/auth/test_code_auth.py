@@ -1,8 +1,9 @@
 import json
 import typing
 
+from api.creds.request_code import get_codes_dict
+
 if typing.TYPE_CHECKING:
-    from flask import Flask
     from flask.testing import FlaskClient
 
 
@@ -38,10 +39,13 @@ def test_verify_code_invalid_request(test_client: "FlaskClient"):
     assert r.status_code == 403
 
 
-def test_verify_code_wrong(test_client: "FlaskClient"):
+def test_verify_code_operation(test_client: "FlaskClient"):
     test_email = "testing@rmit.edu.au"
 
-    # get a code
+    codes = get_codes_dict()
+    assert test_email not in codes
+
+    # create and get a code
     r = test_client.post("/api/code/new", headers={"email": test_email})
     assert r.status_code == 200
 
@@ -55,6 +59,20 @@ def test_verify_code_wrong(test_client: "FlaskClient"):
         headers={"email": test_email, "code": "0000"},
     )
     assert r.status_code == 403
+
+    assert test_email in codes
+
+    r = test_client.post(
+        "/api/code/verify",
+        headers={"email": test_email, "code": codes[test_email].secret},
+    )
+    assert r.status_code == 200
+
+    assert r.json["response"] == "Validated"
+
+    # assert there is a token
+    assert "token" in r.json
+    assert len(r.json["token"]) > 0
 
 
 def _decode_response(response: "bytes") -> dict:
