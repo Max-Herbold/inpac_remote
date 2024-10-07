@@ -75,6 +75,73 @@ def test_verify_code_operation(test_client: "FlaskClient"):
     assert len(r.json["token"]) > 0
 
 
+def test_access_authenticated(test_client: "FlaskClient"):
+    test_email = "testing2@rmit.edu.au"
+    # get a code
+    r = test_client.post("/api/code/new", headers={"email": test_email})
+    assert r.status_code == 200
+
+    # grab the code and get a token
+    code = get_codes_dict()[test_email].secret
+    r = test_client.post(
+        "/api/code/verify",
+        headers={"email": test_email, "code": code},
+    )
+    assert r.status_code == 200
+    token = r.json["token"]
+
+    # try to access the dashboard without a token
+
+    # validate the token
+    r = test_client.get("/api/user/validate")
+    assert r.status_code == 400  # no cookie
+
+    test_client.set_cookie("token", "lolwot")
+    r = test_client.get("/api/user/validate")
+    assert r.status_code == 200  # not valid cookie
+    assert r.json["response"] == "success"
+    assert r.json["valid"] is False
+
+    test_client.set_cookie("token", token)
+    r = test_client.get("/api/user/validate")
+    assert r.status_code == 200
+    assert r.json["response"] == "success"
+    assert r.json["valid"] is True
+
+
+def test_logout(test_client: "FlaskClient"):
+    test_email = "testing3@rmit.edu.au"
+    # get a code
+    r = test_client.post("/api/code/new", headers={"email": test_email})
+    assert r.status_code == 200
+
+    codes = get_codes_dict()
+    # grab the code and get a token
+    code = codes[test_email].secret
+    r = test_client.post(
+        "/api/code/verify",
+        headers={"email": test_email, "code": code},
+    )
+    assert r.status_code == 200
+    token = r.json["token"]
+    test_client.set_cookie("token", token)
+
+    r = test_client.get("/api/user/validate")
+    assert r.status_code == 200  # no cookie
+    assert r.json["response"] == "success"
+    assert r.json["valid"] is True
+
+    # post to /api/user/logout
+    r = test_client.post("/api/user/logout")
+    assert r.status_code == 200
+
+    # check the token is removed from the store
+    r = test_client.get("/api/user/validate")
+    assert r.status_code == 200  # no cookie
+    assert r.json["response"] == "success"
+    assert r.json["valid"] is False
+
+
 def _decode_response(response: "bytes") -> dict:
     # decode and convert to json
     return json.loads(response.decode("utf-8"))
