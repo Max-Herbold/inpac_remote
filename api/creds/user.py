@@ -23,7 +23,7 @@ def get_email():
     token = request.cookies.get("token")
 
     if token is None:
-        return {"response"F: "No token provided"}, 400
+        return {"response": "No token provided"}, 400
 
     email = _internal_get_email(token)
 
