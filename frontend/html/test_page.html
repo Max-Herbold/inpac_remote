@@ -3,9 +3,44 @@
     <script src="./javascript/http.js"></script>
     <link rel="stylesheet" href="./css/dashboard/dashboard.css" />
     <link rel="shortcut icon" href="./assets/images/favicon.ico" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 </head>
 
 <body>
+    <table id="device-log-table" class="display">
+        <thead>
+            <tr>
+                <th>Device ID</th>
+                <th>Device Name</th>
+                <th>Device Model</th>
+                <th>Device Serial</th>
+                <th>Device Owner</th>
+                <th>Device Location</th>
+                <th>Device Manufacturer</th>
+                <th>Device Action</th>
+                <th>Device Description</th>
+                <th>Device Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Device 1</td>
+                <td>Model 1</td>
+                <td>Serial 1</td>
+                <td>Owner 1</td>
+                <td>Location 1</td>
+                <td>Manufacturer 1</td>
+                <td>Action 1</td>
+                <td>Description 1</td>
+                <td>Timestamp 1</td>
+            </tr>
+        </tbody>
+    </table>
+
 
     <!-- A button to open the popup form -->
     <button class="open-button" onclick="openForm()">Log Device Movement</button>
@@ -47,4 +82,35 @@
     <script src="./javascript/dashboard/dashboard.js"></script>
     <script src="./javascript/logout.js"></script>
     <!-- <script src="./javascript/login.js"></script> -->
+
+
+    <script>
+        $(document).ready(function () {
+            $('#device-log-table').DataTable();
+
+            // make a httpReq to /api/device/list
+            httpReq('/api/device/list', 'GET', true).then((response) => {
+                console.log(response);
+                // populate the table with the response
+                response.forEach((device) => {
+                    $('#device-log-table').append(`
+                        <tr>
+                            <td>${device.device_id}</td>
+                            <td>${device.device_name}</td>
+                            <td>${device.device_model}</td>
+                            <td>${device.device_serial}</td>
+                            <td>${device.device_owner}</td>
+                            <td>${device.device_location}</td>
+                            <td>${device.device_manufacturer}</td>
+                            <td>${device.device_action}</td>
+                            <td>${device.device_description}</td>
+                            <td>${device.device_timestamp}</td>
+                        </tr>
+                    `);
+                });
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    </script>
 </head>

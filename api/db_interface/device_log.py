@@ -34,3 +34,19 @@ def get_device_logs(device_id):
     logs = cursor.fetchall()
 
     return [DeviceLog(*log) for log in logs]
+
+
+def get_last_device_log(device_id):
+    query = "SELECT * FROM Device_Log WHERE device_id = %s ORDER BY date DESC LIMIT 1"
+    cursor = Database.query(query, (device_id,))
+    log = cursor.fetchone()
+
+    return DeviceLog(*log)
+
+
+def get_log_by_id(log_id):
+    query = "SELECT * FROM device_log WHERE id = %s"
+    cursor = Database.query(query, (log_id,))
+    log = cursor.fetchone()
+
+    return DeviceLog(*log)

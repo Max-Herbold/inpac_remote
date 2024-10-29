@@ -16,7 +16,18 @@ def _is_debugging() -> bool:
     return os.environ.get("DEBUG") == "True"
 
 
-def grab_file(filename: str, parent: str):
+def _is_authenticated(r) -> bool:
+    if r is None:
+        return False
+    token = r.cookies.get("token")
+    return token is not None
+
+
+def _is_debugging_and_not_authenticated(r: Request) -> bool:
+    return _is_debugging() and not _is_authenticated(r)
+
+
+def grab_file(filename: str, parent: str, r: Request = None) -> tuple[str, int]:
     if ".." in filename:
         return "Not Found", 404
 
@@ -25,7 +36,7 @@ def grab_file(filename: str, parent: str):
     if filename.startswith("debug_") and not (_is_debugging()):
         return "Not Found", 404
 
-    if _is_debugging():
+    if _is_debugging_and_not_authenticated(r):
         filename = debug_mappings.get(filename, filename)
 
     filename = filename.strip(".")
@@ -37,7 +48,8 @@ def grab_file(filename: str, parent: str):
 def js(path: str):
     if not path.endswith(".js"):
         return "Not Found", 404
-    return grab_file(path, parent="javascript")
+    r = request
+    return grab_file(path, parent="javascript", r=r)
 
 
 @css_loader.route("/<path:path>")
@@ -49,6 +61,5 @@ def css(path: str):
 
 def html(filename: str):
     if not filename.endswith(".html"):
-        # return "Not Found", 404
         filename = f"{filename}.html"
     return grab_file(filename, parent="html")

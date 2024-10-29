@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
+from .device_log import get_device_logs, get_log_by_id, new_device_log
 from .interface import Database
-from .device_log import new_device_log
 
 
 @dataclass
@@ -15,6 +15,28 @@ class Device:
     device_location: str
     device_owner: str
     last_log_id: int = -1
+
+    last_action: str = None
+    last_action_description: str = None
+    last_action_timestamp: str = None
+
+    def __post_init__(self):
+        if self.last_log_id == -1:
+            self.last_action = None
+            self.last_action_description = None
+            self.last_action_timestamp = None
+            return
+
+        last_log = get_log_by_id(self.last_log_id)
+        self.last_action = last_log.action
+        self.last_action_description = last_log.description
+        self.last_action_timestamp = last_log.date
+
+    def get_last_log(self):
+        return get_log_by_id(self.id)
+
+    def get_logs(self):
+        return get_device_logs(self.id)
 
 
 def create_new_device(

@@ -11,7 +11,11 @@ window.addEventListener('beforeunload', () => {
 function displayLoggedInUser(email) {
     if (email) {
         const string = `Logged in as ${email}`;
-        document.getElementById("test-validator").innerHTML = string;
+        try {
+            document.getElementById("test-validator").innerHTML = string;
+        } catch (error) {
+            console.error(error);
+        }
     } else {
         window.location.href = "/";
     }
@@ -32,8 +36,8 @@ function addHeader(email) {
     const headerDiv = document.getElementById("header-div");
     headerDiv.innerHTML = `
     <img src="/assets/images/inpac.png" id="header-image"/>
-    <h1>placeholder</h1>
     <div>
+        <h1>placeholder</h1>
         <button id="logoutButton" onclick="logoutUser()">Logout</button>
     </div>
     `;

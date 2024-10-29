@@ -2,7 +2,7 @@ body {
     background-color: #0c2d48;
 }
 
-.center-screen {
+.no-scroll-center-screen {
     display: flex;
     justify-content: center;
     align-items: center;

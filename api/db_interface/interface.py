@@ -48,13 +48,3 @@ class Database:
             cursor = Database.conn.cursor()
             cursor.execute(sql, values)
         return cursor
-
-
-# def Database.query(query, values=None):
-#     mycursor = mydb.cursor(buffered=True)
-#     mycursor.execute(query, values)
-#     mydb.commit()
-#     return mycursor
-
-
-# print("Connected to database")

@@ -1,5 +1,5 @@
 #logoutButton {
-    background-color: #555;
+    background-color: #ee3939;
     color: white;
     padding: 16px 20px;
     border: none;
@@ -9,7 +9,11 @@
     position: fixed;
     display: block;
     right: 25px;
-    top: 25px;
+    top: 1.9rem;
+
+    /* set text size */
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 #logoutButton:hover {
@@ -23,7 +27,6 @@
     width: 100%;
     background-color: #000000;
     color: white;
-    padding: 10px;
     text-align: center;
     z-index: 100;
     top: 0;
@@ -42,4 +45,5 @@ body {
     height: 75px;
     width: 75px;
     left: 10px;
+    top: 1rem;
 }
