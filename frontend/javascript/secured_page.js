@@ -10,9 +10,9 @@ window.addEventListener('beforeunload', () => {
 // make this a header bar
 function displayLoggedInUser(email) {
     if (email) {
-        const string = `Logged in as ${email}`;
+        const string = `${email}`;
         try {
-            document.getElementById("test-validator").innerHTML = string;
+            document.getElementById("loggedInAsDisplay").innerHTML = string;
         } catch (error) {
             console.error(error);
         }
@@ -37,11 +37,22 @@ function addHeader(email) {
     headerDiv.innerHTML = `
     <img src="/assets/images/inpac.png" id="header-image"/>
     <div>
-        <h1>placeholder</h1>
+        <h1 id=headerText>Dashboard</h1>
+    </div>
+    <div id="logOutButtonDiv">
+        <p id="loggedInAsDisplayParagraph">
+            <span>Logged in as: </span>
+            <span id=loggedInAsDisplay></span>
+        </p>
         <button id="logoutButton" onclick="logoutUser()">Logout</button>
     </div>
     `;
 }
+
+function setHeaderText(text) {
+    const headerText = document.getElementById("headerText");
+    headerText.innerHTML = text;
+} 
 
 window.addEventListener('load', () => {
     // validate the token
@@ -54,8 +65,8 @@ window.addEventListener('load', () => {
         .then((response) => {
             if (response) {
                 let email = response.email;
-                displayLoggedInUser(email);
                 addHeader(email);
+                displayLoggedInUser(email);
             }
         }).catch((error) => {
             window.location.href = "/";

@@ -20,10 +20,12 @@ def list_devices_endpoint():
 
 
 @device_bp.route("/add", methods=["post"])
-@authenticate_user(required_permission_level=1)
+@authenticate_user(required_permission_level=0)
 def add_device(user: "User"):
-    data = request.headers
-    print(request.body, request.json())
+    data: dict = request.json
+    print(request)
+    print(request.json)
+    # print(request.json)
     print(user)
 
     user_id = user.id
@@ -35,6 +37,7 @@ def add_device(user: "User"):
     serial_number = data.get("device_serial_number")  # optional
     device_name = data.get("device_name")  # optional
     firmware_version = data.get("firmware_version")  # optional
+    additional_notes = data.get("additional_notes")  # optional
 
     if model is None:
         return {"response": "error", "error": "Model is required"}, 400
@@ -53,13 +56,15 @@ def add_device(user: "User"):
             user_id,
             model,
             serial_number,
+            device_owner,
             device_name,
             manufacturer,
             firmware_version,
             device_location,
+            device_action,
+            additional_notes,
         )
 
-        # create_new_device(data)
         return response, 200
     except Exception as e:
         return {"response": "error", "error": str(e)}, 400

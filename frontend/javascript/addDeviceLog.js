@@ -9,7 +9,7 @@ function submitLogForm() {
     let device_name = document.getElementById("device_name").value;
     let additional_notes = document.getElementById("device_description").value;
 
-    const headers = {
+    const bodyContent = {
         "device_location": device_location,
         "device_owner": device_owner,
         "device_action": device_action,
@@ -19,8 +19,9 @@ function submitLogForm() {
         "device_name": device_name,
         "additional_notes": additional_notes
     }
+    console.log(bodyContent);
 
-    httpReq(`/api/device/add`, "POST", true, headers).then((response) => {
+    httpReq(`/api/device/add`, "POST", true, null, bodyContent).then((response) => {
         console.log(response);
     }).catch((error) => {
         console.error(error);

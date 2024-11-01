@@ -48,12 +48,17 @@ def create_new_device(
     firmware_version,
     device_location,
     device_owner,
+    device_action,
+    additional_notes,
 ):
     """
     Creates a new device and returns the device object
     """
-    query = "INSERT INTO Device (model, serial_number, device_name, manufacturer, firmware_version, device_location, device_owner) VALUES (%s, %s, %s, %s, %s, %s %s)"
-    Database.query(
+    query = (
+        "INSERT INTO Device (model, serial_number, device_name, manufacturer, firmware_version, device_location, device_owner) "
+        + "VALUES (%s, %s, %s, %s, %s, %s %s)"
+    )
+    Database.execute(
         query,
         (
             model,
@@ -71,7 +76,7 @@ def create_new_device(
     cursor = Database.query(query)
     device_id = cursor.fetchone()[0]
 
-    return new_device_log(device_id, created_by_id, "create", "Device created")
+    return new_device_log(device_id, created_by_id, device_action, additional_notes)
 
 
 def list_devices():

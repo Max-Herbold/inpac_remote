@@ -15,7 +15,7 @@ class DeviceLog:
 
 def new_device_log(device_id, created_by_id, action: str, description: str):
     query = "INSERT INTO Device_Log (device_id, user_id, date, action, description) VALUES (%s, %s, NOW(), %s, %s)"
-    Database.query(query, (device_id, created_by_id, action, description))
+    Database.execute(query, (device_id, created_by_id, action, description))
 
     # go back and update the device object with the last log id
     query = "SELECT LAST_INSERT_ID()"

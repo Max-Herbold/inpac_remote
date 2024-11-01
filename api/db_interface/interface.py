@@ -17,6 +17,10 @@ BASEDIR = os.path.dirname(BASEDIR)
 class Database:
     conn: mysql.connector.MySQLConnection = None
 
+    def __init__(self):
+        if not self.is_connected():
+            Database.connect()
+
     def connect() -> None:
         # Load the environment variables
         env_vars: dict = load_env()
@@ -33,13 +37,17 @@ class Database:
             database=database,
         )
 
+    def __del__(self):
+        if self.is_connected():
+            Database.close()
+
     def is_connected(self) -> bool:
         # conn might be None if it was never connected
         # it might still be defined if the connection was lost
         return Database.conn is not None and Database.conn.is_connected()
 
     @staticmethod
-    def query(sql, values=None) -> "MySQLCursor":
+    def _query(sql, values=None):
         try:
             cursor = Database.conn.cursor()
             cursor.execute(sql, values)
@@ -48,3 +56,21 @@ class Database:
             cursor = Database.conn.cursor()
             cursor.execute(sql, values)
         return cursor
+
+    @staticmethod
+    def query(sql, values=None) -> "MySQLCursor":
+        return Database._query(sql, values)
+
+    @staticmethod
+    def execute(sql, values=None) -> "MySQLCursor":
+        cursor = Database._query(sql, values)
+        Database.commit()
+        return cursor
+
+    @staticmethod
+    def commit():
+        Database.conn.commit()
+
+    @staticmethod
+    def close():
+        Database.conn.close()

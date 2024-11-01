@@ -14,7 +14,7 @@ class User:
 
 def _new_user(email, ip):
     query = "INSERT INTO User (email, ip_login, permission) VALUES (%s, %s, %s)"
-    Database.query(query, (email, ip, 0))
+    Database.execute(query, (email, ip, 0))
 
 
 def user_login(email, ip):
@@ -30,8 +30,8 @@ def user_login(email, ip):
         result = cursor.fetchone()
 
     # update the user's last login and ip
-    query = "UPDATE User SET ip_login = %s, last_login = NOW() WHERE email = %s"
-    Database.query(query, (ip, email))
+    query = "UPDATE User SET ip_login = %s, last_login=NOW() WHERE email=%s"
+    Database.execute(query, (ip, email))
 
 
 def get_user_permission_level(email) -> int:
