@@ -45,7 +45,7 @@ def get_last_device_log(device_id):
 
 
 def get_log_by_id(log_id):
-    query = "SELECT * FROM device_log WHERE id = %s"
+    query = "SELECT * FROM Device_Log WHERE id = %s"
     cursor = Database.query(query, (log_id,))
     log = cursor.fetchone()
 
