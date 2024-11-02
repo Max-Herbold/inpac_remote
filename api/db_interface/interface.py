@@ -62,9 +62,10 @@ class Database:
         return Database._query(sql, values)
 
     @staticmethod
-    def execute(sql, values=None) -> "MySQLCursor":
+    def execute(sql, values=None, commit=True) -> "MySQLCursor":
         cursor = Database._query(sql, values)
-        Database.commit()
+        if commit:
+            Database.commit()
         return cursor
 
     @staticmethod

@@ -12,9 +12,9 @@ class User:
     permission: int
 
 
-def _new_user(email, ip):
+def _new_user(email, ip, commit=True):
     query = "INSERT INTO User (email, ip_login, permission) VALUES (%s, %s, %s)"
-    Database.execute(query, (email, ip, 0))
+    Database.execute(query, (email, ip, 0), commit=commit)
 
 
 def user_login(email, ip):
@@ -25,7 +25,8 @@ def user_login(email, ip):
 
     # if the user does not exist, create a new user
     if result is None:
-        _new_user(email, ip)
+        # since there is still another execute statement, we don't want to commit yet
+        _new_user(email, ip, commit=False)
         cursor = Database.query(query, (email,))
         result = cursor.fetchone()
 
