@@ -27,6 +27,11 @@ jobs:
           mysql database: ${{vars.DB_DATABASE}} # Optional, default value is "test". The specified database which will be create
           mysql root password: ${{ secrets.DB_PASSWORD }} # Required if "mysql user" is empty, default is empty. The root superuser password
 
+      - name: Execute db.sql
+        run: |
+          mysql -u root -p${{ secrets.DB_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{vars.DB_DATABASE}};"
+          mysql -u root -p${{ secrets.DB_PASSWORD }} ${{vars.DB_DATABASE}} < db.sql
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
