@@ -35,8 +35,10 @@ function addHeader(email) {
     // add the header to the header div
     const headerDiv = document.getElementById("header-div");
     headerDiv.innerHTML = `
-    <img src="/assets/images/inpac.png" id="header-image"/>
     <div>
+        <a href="/dashboard">
+            <img src="/assets/images/inpac.png" id="header-image"/>
+        </a>
         <h1 id=headerText>Dashboard</h1>
     </div>
     <div id="logOutButtonDiv">
