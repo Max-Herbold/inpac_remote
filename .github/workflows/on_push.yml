@@ -15,6 +15,11 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.10"]
+    env:
+      DB_DATABASE: ${{ vars.DB_DATABASE }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ vars.DB_HOST }}
     steps:
       - uses: mirromutth/mysql-action@v1.1
         with:
@@ -35,11 +40,6 @@ jobs:
           python -m pip install -r requirements-test.txt
 
       - name: Run tests
-        env:
-          DB_DATABASE: ${{ vars.DB_DATABASE }}
-          DB_USER: ${{ vars.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_HOST: ${{ vars.DB_HOST }}
         run: |
           pytest
   Deploy:
