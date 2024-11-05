@@ -1,7 +1,6 @@
 import hashlib
 import os
 
-import requests
 from flask import Blueprint, abort, request
 
 from ..env_loader import load_env
