@@ -4,7 +4,7 @@ import re
 from flask import Blueprint, Flask, request
 
 from ..db_interface import user
-from .emailer import send
+from ..emailer import send
 from .management.code_object import CodeObject
 from .management.token_store import CredStore
 
