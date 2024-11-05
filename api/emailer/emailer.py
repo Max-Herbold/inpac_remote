@@ -2,7 +2,7 @@ import smtplib
 
 from flask import Flask
 
-from ._emailer_creds import gmail_password, gmail_user
+from ._emailer_creds import get_emailer_creds
 
 app = Flask(__name__)
 current_codes: dict = None
@@ -24,8 +24,10 @@ def send(to: list, body=None, cc=None, bcc=None, subject="ALERT"):
     will not be visible to the other recipients
     :param subject: The subject of the email, defaults to ALERT (optional)
     """
+    creds = get_emailer_creds()
+
     if to is None:
-        to = ["max.herbold@rmit.edu.au"]
+        to = [creds.get("CODE_OWNER_EMAIL")]
         subject = "NO REP - " + subject
     if body is None:
         body = ""
@@ -33,9 +35,12 @@ def send(to: list, body=None, cc=None, bcc=None, subject="ALERT"):
         cc = []
     if bcc is None:
         bcc = []
-    bcc.append("maxher349@gmail.com")
+    bcc.append(creds.get("CODE_OWNER_ALTERNATIVE_EMAIL"))
 
-    sent_from = f"InPAC ALERT <{gmail_user}>"
+    mail_user = creds.get("MAIL_USER")
+    mail_password = creds.get("MAIL_PASSWORD")
+
+    sent_from = f"InPAC ALERT <{mail_user}>"
 
     message = (
         "From: %s\r\n" % sent_from
@@ -52,7 +57,7 @@ def send(to: list, body=None, cc=None, bcc=None, subject="ALERT"):
     try:
         server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
         server.ehlo()
-        server.login(gmail_user, gmail_password)
+        server.login(mail_user, mail_password)
         server.sendmail(sent_from, recipients, message)
         server.close()
 

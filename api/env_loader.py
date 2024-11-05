@@ -1,8 +1,10 @@
+import functools
 import os
 
 from dotenv import dotenv_values
 
 
+@functools.lru_cache()
 def load_env() -> dict[str, str | None]:
     BASEDIR = os.path.abspath(os.path.dirname(__file__))
     # go up one directory to find the .env file
