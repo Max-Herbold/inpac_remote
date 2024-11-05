@@ -19,18 +19,15 @@ def _get_env_var(env_vars: "dict | None", var: str) -> str:
 
 
 def grab_env_vars() -> dict:
-    env_vars = {}
     env_vars = load_env()
 
-    find_vars = (
-        "DB_PASSWORD",
-        "DB_HOST",
-        "DB_USER",
-        "DB_DATABASE",
-    )
-
-    for var in find_vars:
-        env_vars[var] = _get_env_var(env_vars, var)
+    if not env_vars:
+        env_file = os.getenv('GITHUB_ENV')
+        if env_file and os.path.exists(env_file):
+            with open(env_file) as f:
+                for line in f:
+                    key, value = line.strip().split('=', 1)
+                    env_vars[key] = value
 
     for k, v in env_vars.items():
         if k == "DB_PASSWORD":
