@@ -14,6 +14,27 @@ BASEDIR = os.path.dirname(BASEDIR)
 BASEDIR = os.path.dirname(BASEDIR)
 
 
+def _get_env_var(env_vars: "dict | None", var: str) -> str:
+    return env_vars.get(var) or os.environ.get(var)
+
+
+def grab_env_vars() -> dict:
+    env_vars = {}
+    env_vars = load_env()
+
+    find_vars = (
+        "DB_PASSWORD",
+        "DB_HOST",
+        "DB_USER",
+        "DB_DATABASE",
+    )
+
+    for var in find_vars:
+        env_vars[var] = _get_env_var(env_vars, var)
+
+    return env_vars
+
+
 class Database:
     conn: mysql.connector.MySQLConnection = None
 
@@ -23,12 +44,12 @@ class Database:
 
     def connect() -> None:
         # Load the environment variables
-        env_vars: dict = load_env()
+        env_vars: dict = grab_env_vars()
 
-        host = env_vars.get("db_host")
-        user = env_vars.get("db_user")
-        password = env_vars.get("db_password")
-        database = env_vars.get("db_database")
+        host = env_vars.get("DB_HOST")
+        user = env_vars.get("DB_USER")
+        password = env_vars.get("DB_PASSWORD")
+        database = env_vars.get("DB_DATABASE")
 
         Database.conn = mysql.connector.connect(
             host=host,
