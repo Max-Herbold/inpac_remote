@@ -6,7 +6,6 @@ import mysql.connector
 if typing.TYPE_CHECKING:
     from mysql.connector.cursor import MySQLCursor
 
-from ..env_loader import load_env
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 # go up two directories to find the .env file
@@ -15,25 +14,26 @@ BASEDIR = os.path.dirname(BASEDIR)
 
 
 def grab_env_vars() -> dict:
-    env_vars = load_env()
+    # If running in GitHub Actions, use os.getenv directly
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        env_vars = {
+            "DB_HOST": os.getenv("DB_HOST"),
+            "DB_USER": os.getenv("DB_USER"),
+            "DB_PASSWORD": os.getenv("DB_PASSWORD"),
+            "DB_DATABASE": os.getenv("DB_DATABASE"),
+        }
+    else:
+        # Local environment, use load_env()
+        from ..env_loader import load_env
 
-    if not env_vars:
-        print("No environment variables file found, using os.getenv")
+        env_vars = load_env() or {}
 
-        env_file = os.getenv("GITHUB_ENV")
-        if env_file and os.path.exists(env_file):
-            with open(env_file) as f:
-                for line in f:
-                    key, value = line.strip().split("=", 1)
-                    env_vars[key] = value
-        env_vars["DB_PASSWORD"] = os.getenv("DB_PASSWORD")
-
+    # Ensure sensitive data (e.g., passwords) is handled safely
     for k, v in env_vars.items():
         if k == "DB_PASSWORD":
-            print(f"{k}: {type(v)}")
-            continue
-        print(f"{k}: {v}")
-
+            print(f"{k}: [REDACTED]")
+        else:
+            print(f"{k}: {v}")
     return env_vars
 
 
