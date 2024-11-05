@@ -32,6 +32,12 @@ def grab_env_vars() -> dict:
     for var in find_vars:
         env_vars[var] = _get_env_var(env_vars, var)
 
+    for k, v in env_vars.items():
+        if k == "DB_PASSWORD":
+            print(f"{k}: {type(v)}")
+            continue
+        print(f"{k}: {v}")
+
     return env_vars
 
 
