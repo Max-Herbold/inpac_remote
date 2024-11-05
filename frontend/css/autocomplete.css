@@ -26,6 +26,13 @@ input[type=text] {
     left: 0.5em;
 }
 
+textarea {
+    margin-right: 10px;
+    background-color: #f1f1f1;
+    width: 20rem;
+    left: 0.5em;
+}
+
 input[type=submit] {
     margin-right: 10px;
     background-color: rgb(30, 144, 255);
@@ -50,7 +57,8 @@ input[type=submit]:hover {
 }
 
 .autocomplete-items div {
-    width: 100%;  /* do not change this */
+    width: 100%;
+    /* do not change this */
     padding: 5px;
     cursor: pointer;
     background-color: #fff;

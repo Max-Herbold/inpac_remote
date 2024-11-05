@@ -1,3 +1,4 @@
+import os
 import re
 
 from flask import Blueprint, Flask, request
@@ -9,6 +10,8 @@ from .management.token_store import CredStore
 
 app = Flask(__name__)
 app.codes = {}
+
+
 if not hasattr(app, "token_store"):
     app.token_store = CredStore()
 
@@ -28,14 +31,14 @@ request_code = Blueprint("request_code", __name__, url_prefix="/code")
 
 
 ALLOWED_EXTENSIONS = {
-    # TODO: Add more universities
+    # NOTE: Add more email extensions here
     "rmit.edu.au",
     "student.rmit.edu.au",
     "student.monash.edu",
     "monash.edu",
 }
 
-email_re = re.compile(r"[^@]+@[^@]+\.[^@]+")
+email_regex = re.compile(r"[^@]+@[^@]+\.[^@]+")
 
 
 def _cleanup_codes():
@@ -46,13 +49,13 @@ def _cleanup_codes():
 
 
 @request_code.route("/new", methods=["POST"])
-def new_code():
+def new_code(send_email=True):
     # Removes expired codes
     _cleanup_codes()
     # grab the email from the request headers
     email = request.headers.get("email")
 
-    if email is None:
+    if email is None or email == "":
         return {"response": "No email provided"}, 400
 
     codes = get_codes_dict()
@@ -66,7 +69,7 @@ def new_code():
         return {"response": "Rate limiting"}, 400
 
     # check if the email is valid
-    if not email_re.match(email):
+    if not email_regex.match(email):
         return {"response": "Invalid email"}, 400
 
     if email.rsplit("@", 1)[1] not in ALLOWED_EXTENSIONS:
@@ -77,9 +80,9 @@ def new_code():
 
     codes[email] = code_state
 
-    body = f"Your code is {code_state.secret}\n\nThis code is valid for {code_state._live_for_seconds / 60:.0f} minutes."
-
-    send([email], subject="2FA Code", body=body)
+    if send_email and not email.startswith("testing"):
+        body = f"Your code is {code_state.secret}\n\nThis code is valid for {code_state._live_for_seconds / 60:.0f} minutes."
+        send([email], subject="2FA Code", body=body)
 
     return {"response": "Code sent"}, 200
 
@@ -87,15 +90,20 @@ def new_code():
 @request_code.route("/verify", methods=["POST"])
 def verify_code():
     _cleanup_codes()
+
     email = request.headers.get("email")
     code = request.headers.get("code")
     ip_header = request.headers.get("X-Real-IP", "Undetected")
+
+    if os.environ.get("DEBUG") == "True" and email == "max.herbold@rmit.edu.au":
+        new_code(send_email=False)
+        code = get_codes_dict()[email].secret
 
     if email is None or code is None:
         return {"response": "No email or code provided"}, 400
 
     if email not in get_codes_dict():
-        return {"response": "Code is not valid"}, 400
+        return {"response": "Code is not valid"}, 403
 
     code_state = get_codes_dict()[email]
 
@@ -105,4 +113,4 @@ def verify_code():
         token = get_token_store().create_new_cred(email)
         return {"response": "Validated", "token": token}, 200
     else:
-        return {"response": "Code is not valid"}, 400
+        return {"response": "Code is not valid"}, 403

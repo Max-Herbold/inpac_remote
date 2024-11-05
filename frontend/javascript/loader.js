@@ -166,5 +166,14 @@ z"/>
 
 // When the page is loaded, fill the loader
 window.addEventListener("load", function (event) {
-    fill_loader();
+    // include the loader css
+    const link = document.createElement("link");
+    link.href = "/css/loader.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    // wait for the css to load before calling fill_loader
+    link.onload = function () {
+        fill_loader();
+    };
 });

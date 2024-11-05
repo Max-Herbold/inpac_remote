@@ -5,9 +5,15 @@
 /* set body background */
 body {
     background-color: #0c2d48;
+    font-family: 'Outfit', sans-serif;
+    font-size: 140%;
 }
 
-/* Button used to open the contact form - fixed at the bottom of the page */
+button { 
+    border-radius: 4px;
+}
+
+/* Button used to open the log form - fixed at the bottom of the page */
 .open-button {
     background-color: #555;
     color: white;
@@ -25,7 +31,7 @@ body {
 .form-popup {
     display: none;
     position: fixed;
-    bottom: 0;
+    bottom: -40;
     right: 15px;
     border: 3px solid #f1f1f1;
     z-index: 9;
@@ -33,15 +39,17 @@ body {
 
 /* Add styles to the form container */
 .form-container {
-    max-width: 300px;
+    max-width: 30%;
     padding: 10px;
     background-color: white;
+    font-size: 71%;
 }
 
 /* Full-width input fields */
 .form-container select,
 .form-container input[type=text],
-.form-container input[type=password] {
+.form-container input[type=password],
+.form-container textarea {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
@@ -51,7 +59,8 @@ body {
 
 /* When the inputs get focus, do something */
 .form-container input[type=text]:focus,
-.form-container input[type=password]:focus {
+.form-container input[type=password]:focus,
+.form-container textarea:focus {
     background-color: #ddd;
     outline: none;
 }
@@ -77,4 +86,32 @@ body {
 .form-container .btn:hover,
 .open-button:hover {
     opacity: 1;
+}
+
+h2 {
+    text-align: center;
+    padding: 20px 0;
+}
+
+table caption {
+    padding: .5em 0;
+}
+
+table.dataTable th,
+table.dataTable td {
+    white-space: nowrap;
+}
+
+.p {
+    text-align: center;
+    padding-top: 140px;
+    font-size: 14px;
+}
+
+.center-element {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 90vh;
 }

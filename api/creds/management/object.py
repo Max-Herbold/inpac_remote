@@ -2,6 +2,11 @@ import time
 
 
 class CredObject:
+    # set by subclasses
+    # make the cred unusable if it is validated once (OTP)
+    _expire_on_valid: bool
+    _live_for_seconds: float  # how long the cred is valid for
+
     def __post_init__(self):
         self._secret: str = self.generate_secret()
         self._time = time.time()

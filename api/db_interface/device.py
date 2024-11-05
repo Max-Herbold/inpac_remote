@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
+from .device_log import get_device_logs, get_log_by_id, new_device_log
 from .interface import Database
-from .device_log import new_device_log
 
 
 @dataclass
@@ -13,7 +13,30 @@ class Device:
     manufacturer: str
     firmware_version: str
     device_location: str
+    device_owner: str
     last_log_id: int = -1
+
+    last_action: str = None
+    last_action_description: str = None
+    last_action_timestamp: str = None
+
+    def __post_init__(self):
+        if self.last_log_id == -1:
+            self.last_action = None
+            self.last_action_description = None
+            self.last_action_timestamp = None
+            return
+
+        last_log = get_log_by_id(self.last_log_id)
+        self.last_action = last_log.action
+        self.last_action_description = last_log.description
+        self.last_action_timestamp = last_log.date
+
+    def get_last_log(self):
+        return get_log_by_id(self.id)
+
+    def get_logs(self):
+        return get_device_logs(self.id)
 
 
 def create_new_device(
@@ -24,12 +47,18 @@ def create_new_device(
     manufacturer,
     firmware_version,
     device_location,
+    device_owner,
+    device_action,
+    additional_notes,
 ):
     """
     Creates a new device and returns the device object
     """
-    query = "INSERT INTO Device (model, serial_number, device_name, manufacturer, firmware_version, device_location) VALUES (%s, %s, %s, %s, %s, %s)"
-    Database.query(
+    query = (
+        "INSERT INTO Device (model, serial_number, device_name, manufacturer, firmware_version, device_location, device_owner) "
+        + "VALUES (%s, %s, %s, %s, %s, %s %s)"
+    )
+    Database.execute(
         query,
         (
             model,
@@ -38,6 +67,7 @@ def create_new_device(
             manufacturer,
             firmware_version,
             device_location,
+            device_owner,
         ),
     )
 
@@ -46,7 +76,7 @@ def create_new_device(
     cursor = Database.query(query)
     device_id = cursor.fetchone()[0]
 
-    new_device_log(device_id, created_by_id, "create", "Device created")
+    return new_device_log(device_id, created_by_id, device_action, additional_notes)
 
 
 def list_devices():

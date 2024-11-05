@@ -10,6 +10,7 @@ CREATE TABLE Device (
     manufacturer VARCHAR(50),
     firmware_version VARCHAR(50),
     device_location VARCHAR(50),
+    device_owner VARCHAR(50),
     last_log_id INT DEFAULT -1
 );
 

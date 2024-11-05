@@ -3,47 +3,106 @@
   <script src="./javascript/http.js"></script>
   <link rel="stylesheet" href="./css/dashboard/dashboard.css" />
   <link rel="shortcut icon" href="./assets/images/favicon.ico" />
+
+  <!-- Loading table stuff -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 </head>
 
 <body>
   <!-- <div class="loader" background-image="../assets/images/inpac.png"></div> -->
   <!-- add a form for entry, hide the code box -->
-  <div class="center-screen">
-    <p id="test-validator"></p>
+  <!-- <div class="center-screen"> -->
+  <p id="test-validator"></p>
+  <!-- </div> -->
+
+  <!-- <h2>Responsive Table with DataTables</h2> -->
+
+  <div class="center-element">
+    <div class="pulsing-loader" id="device-log-table-loader"></div>
   </div>
 
-  <div>
+  <table id="device-log-table" class="display">
+    <thead>
+      <tr>
+        <th>Device ID</th>
+        <th>Device Name</th>
+        <th>Device Model</th>
+        <th>Device Serial</th>
+        <th>Device Owner</th>
+        <th>Device Location</th>
+        <th>Device Manufacturer</th>
+        <th>Last Action</th>
+        <th>Action Description</th>
+        <th>Action Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr>
+          <td>1</td>
+          <td>Device 1</td>
+          <td>Model 1</td>
+          <td>Serial 1</td>
+          <td>Owner 1</td>
+          <td>Location 1</td>
+          <td>Manufacturer 1</td>
+          <td>Action 1</td>
+          <td>Description 1</td>
+          <td>Timestamp 1</td>
+        </tr> -->
+    </tbody>
+  </table>
+  <!-- <div>
     <button id="logout" onclick="logoutUser()">Logout</button>
-  </div>
+  </div> -->
 
   <!-- A button to open the popup form -->
   <button class="open-button" onclick="openForm()">Log Device Movement</button>
 
   <!-- The form -->
-  <div class="form-popup" id="myForm">
+  <div class="form-popup" id="deviceLogForm">
     <form onsubmit="return false;" class="form-container">
       <h1>Create Device Log</h1>
+      <!-- location -->
+      <label for="location"><b>Location</b></label>
+      <input type="text" placeholder="Enter Location" id="device_location" name="device_location" required>
 
-      <!-- device name field -->
-      <label for="device_name"><b>Device Name</b></label>
-      <input type="text" placeholder="Enter Device Name" name="device_name" required>
+      <!-- device owner -->
+      <label for="device_owner"><b>Device Owner</b></label>
+      <input type="text" placeholder="Enter Device Owner (e.g. RMIT...)" id="device_owner" name="device_owner" required>
 
       <!-- device log action, move/install/repair/discard -->
       <label for="device_action"><b>Device Action</b></label>
       <select name="device_action" id="device_action">
         <option value="move">Move</option>
-        <option value="install">Install</option>
+        <option value="create">New Device</option>
         <option value="repair">Repair</option>
         <option value="discard">Discard</option>
       </select>
 
+      <label for="device_model"><b>Device Model</b></label>
+      <input type="text" placeholder="Enter Device Model" id="device_model" name="device_model" required>
+
+      <!-- manufacturer -->
+      <label for="device_manufacturer"><b>Manufacturer</b></label>
+      <input type="text" placeholder="Enter Manufacturer" id="device_manufacturer" name="device_manufacturer" required>
+
+      <!-- device serial number field -->
+      <label for="device_serial_number"><b>Device Serial</b></label>
+      <input type="text" placeholder="Enter Device Serial" id="device_serial_number" name="device_serial_number">
+
+      <!-- device name field -->
+      <label for="device_name"><b>Device Name</b></label>
+      <input type="text" placeholder="Enter Device Name" id="device_name" name="device_name">
+
       <!-- device log description -->
-      <label for="device_description"><b>Action Description</b></label>
-      <input type="text" placeholder="Enter Device Description" name="device_description" required>
+      <label for="device_description"><b>Notes</b></label>
+      <textarea placeholder="Any additional notes (optional)" id="device_description"
+        name="device_description"></textarea>
 
-
-      <button type="submit" class="btn">Submit</button>
-      <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+      <button type="submit" class="btn" onclick="submitLogForm(); return false;">Submit</button>
+      <button type="button" class="btn cancel" onclick="closeForm(); return false;">Cancel</button>
     </form>
   </div>
 
@@ -55,4 +114,6 @@
   <script src="./javascript/secured_page.js"></script>
   <script src="./javascript/dashboard/dashboard.js"></script>
   <script src="./javascript/logout.js"></script>
+  <script src="./javascript/addDeviceLog.js"></script>
+  <script src="./javascript/dataTableLocal.js"></script>
 </head>

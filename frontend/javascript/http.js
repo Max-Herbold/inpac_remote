@@ -12,7 +12,7 @@ function _generateErrorResponse(xmlHttp) {
     }
 }
 
-function httpReq(url, method = "GET", async = false, headers = null) {
+function httpReq(url, method = "GET", async = false, headers = null, body = null) {
     // add the prefix to the url
     url = ENDPOINT + url;
 
@@ -24,6 +24,16 @@ function httpReq(url, method = "GET", async = false, headers = null) {
         for (var key in headers) {
             xmlHttp.setRequestHeader(key, headers[key]);
         }
+    }
+
+    var sendContent = null;
+    // if body is defined as a json object
+    if (body) {
+        // if body is an object, convert to json
+        if (typeof body === 'object') {
+            xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        }
+        sendContent = JSON.stringify(body);
     }
 
     // Error logging function
@@ -45,7 +55,7 @@ function httpReq(url, method = "GET", async = false, headers = null) {
                 }
             };
             try {
-                xmlHttp.send(null);
+                xmlHttp.send(sendContent);
             } catch (error) {
                 logError(error);
                 reject(_generateErrorResponse(xmlHttp));
@@ -53,7 +63,7 @@ function httpReq(url, method = "GET", async = false, headers = null) {
         });
     } else {
         try {
-            xmlHttp.send(null);
+            xmlHttp.send(sendContent);
             if (xmlHttp.status == 200) {
                 return JSON.parse(xmlHttp.responseText);
             } else {
