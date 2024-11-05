@@ -13,15 +13,15 @@ def _update():
     env_vars = load_env()
 
     token = env_vars.get("GH_TOKEN")
+    repo_owner = "Max-Herbold"
+    repo_name = "inpac_remote"
+    PA_project_path = "/home/inpac/inpac_remote"
 
     # run git pull
-    command = (
-        f"git pull https://Max-Herbold:{token}@github.com/Max-Herbold/inpac_remote.git"
-    )
+    command = f"git pull https://{token}@github.com/{repo_owner}/{repo_name}.git"
 
-    # move to dir
-    os.chdir("/home/inpac/inpac_remote")
-    # git pull https://Max-Herbold:***@github.com/Max-Herbold/inpac_remote.git
+    # move to dir (on PA server)
+    os.chdir(PA_project_path)
     return os.system(command)
 
 
