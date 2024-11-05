@@ -15,6 +15,11 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.10"]
+    env:
+      DB_DATABASE: ${{ vars.DB_DATABASE }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ vars.DB_HOST }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
