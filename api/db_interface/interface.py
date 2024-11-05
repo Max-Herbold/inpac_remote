@@ -3,6 +3,8 @@ import typing
 
 import mysql.connector
 
+import functools
+
 if typing.TYPE_CHECKING:
     from mysql.connector.cursor import MySQLCursor
 
@@ -13,6 +15,7 @@ BASEDIR = os.path.dirname(BASEDIR)
 BASEDIR = os.path.dirname(BASEDIR)
 
 
+@functools.lru_cache()
 def grab_env_vars() -> dict:
     # If running in GitHub Actions, use os.getenv directly
     if os.getenv("GITHUB_ACTIONS") == "true":
