@@ -20,7 +20,7 @@ jobs:
         with:
           mysql version: "8.0" # Optional, default value is "latest". The version of the MySQL
           mysql database: "inpac" # Optional, default value is "test". The specified database which will be create
-          mysql root password: ${{ secrets.db_password }} # Required if "mysql user" is empty, default is empty. The root superuser password
+          mysql root password: ${{ secrets.DB_PASSWORD }} # Required if "mysql user" is empty, default is empty. The root superuser password
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
