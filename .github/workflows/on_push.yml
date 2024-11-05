@@ -15,20 +15,9 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.10"]
-    env:
-      DB_DATABASE: ${{ vars.DB_DATABASE }}
-      DB_USER: ${{ vars.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_HOST: ${{ vars.DB_HOST }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # - uses: mirromutth/mysql-action@v1.1
-      #   with:
-      #     mysql version: "8.0" # Optional, default value is "latest". The version of the MySQL
-      #     mysql database: ${{vars.DB_DATABASE}} # Optional, default value is "test". The specified database which will be create
-      #     mysql root password: ${{ secrets.DB_PASSWORD }} # Required if "mysql user" is empty, default is empty. The root superuser password
 
       - name: Execute db.sql
         run: |
