@@ -14,20 +14,19 @@ BASEDIR = os.path.dirname(BASEDIR)
 BASEDIR = os.path.dirname(BASEDIR)
 
 
-def _get_env_var(env_vars: "dict | None", var: str) -> str:
-    return env_vars.get(var) or os.environ.get(var)
-
-
 def grab_env_vars() -> dict:
     env_vars = load_env()
 
     if not env_vars:
-        env_file = os.getenv('GITHUB_ENV')
+        print("No environment variables file found, using os.getenv")
+
+        env_file = os.getenv("GITHUB_ENV")
         if env_file and os.path.exists(env_file):
             with open(env_file) as f:
                 for line in f:
-                    key, value = line.strip().split('=', 1)
+                    key, value = line.strip().split("=", 1)
                     env_vars[key] = value
+        env_vars["DB_PASSWORD"] = os.getenv("DB_PASSWORD")
 
     for k, v in env_vars.items():
         if k == "DB_PASSWORD":
